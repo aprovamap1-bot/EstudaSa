@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprova Map+ · Auditor Triunfo/PB · Estuda Sá</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #faf8f4;
+  --bg-2:      #f3eee5;
+  --surface:   #ffffff;
+  --card:      #ffffff;
+  --card-2:    #f7f3eb;
+  --border:    #e6dfd0;
+  --border-2:  #d4cab5;
+
+  --ink:       #2a2520;
+  --ink-soft:  #5a5247;
+  --muted:     #8a8073;
+  --faint:     #b8ad9b;
+
+  /* Acentos */
+  --plum:      #8b5a8c;
+  --plum-dim:  #8b5a8c15;
+  --terra:     #c47854;
+  --terra-dim: #c4785418;
+  --sage:      #6b8e6b;
+  --sage-dim:  #6b8e6b15;
+  --gold:      #b8923e;
+  --gold-dim:  #b8923e18;
+  --rose:      #b86b7a;
+  --rose-dim:  #b86b7a18;
+  --teal:      #4d8a96;
+  --teal-dim:  #4d8a9618;
+  --ochre:     #c19a3e;
+  --ochre-dim: #c19a3e18;
+  --navy:      #3a5c8a;
+  --navy-dim:  #3a5c8a16;
+
+  /* Cores por matéria - Cargo Auditor */
+  --m-port:    var(--plum);
+  --m-info:    var(--teal);
+  --m-gerais:  var(--gold);
+  --m-const:   var(--navy);
+  --m-trib:    var(--terra);
+  --m-adm:     var(--sage);
+  --m-cont:    var(--ochre);
+  --m-audit:   var(--rose);
+  --m-ci:      var(--plum);
+
+  --font-head: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --r-sm: 8px;
+  --r:    12px;
+  --r-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(42,37,32,0.04);
+  --shadow:    0 2px 8px rgba(42,37,32,0.06);
+  --shadow-lg: 0 8px 24px rgba(42,37,32,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-2); }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
+
+/* HEADER */
+.hdr {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-2) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.hdr-brand { display: flex; align-items: center; gap: 16px; }
+.hdr-logo {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--navy), var(--teal));
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head);
+  font-style: italic; font-weight: 500; font-size: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.hdr-title {
+  font-family: var(--font-head); font-weight: 500;
+  font-size: 1.7rem; line-height: 1.1; letter-spacing: -.02em;
+}
+.hdr-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+.hdr-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.hdr-date { font-family: var(--font-head); font-style: italic; font-weight: 500; font-size: 0.92rem; color: var(--navy); }
+.hdr-motto { font-family: var(--font-head); font-style: italic; font-size: 0.75rem; color: var(--muted); }
+
+/* COUNTDOWN */
+.cd-row {
+  margin: 20px 32px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+.cd-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px 18px;
+  box-shadow: var(--shadow-sm); border-top: 3px solid var(--navy);
+}
+.cd-card.terra { border-top-color: var(--terra); }
+.cd-card.sage  { border-top-color: var(--sage); }
+.cd-card.gold  { border-top-color: var(--gold); }
+.cd-lbl { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-weight: 600; }
+.cd-num { font-family: var(--font-head); font-weight: 500; font-size: 2rem; color: var(--ink); margin: 8px 0 4px; letter-spacing: -.02em; line-height: 1; }
+.cd-info { font-size: 0.74rem; color: var(--ink-soft); }
+
+/* TABS */
+.tabs-wrap {
+  border-bottom: 1px solid var(--border);
+  background: var(--bg); padding: 18px 32px 0;
+  overflow-x: auto;
+}
+.tabs { display: flex; gap: 4px; min-width: max-content; }
+.tab {
+  padding: 10px 18px; border-radius: var(--r) var(--r) 0 0;
+  border: 1px solid transparent; background: transparent;
+  color: var(--muted); cursor: pointer; font-size: 0.85rem;
+  font-weight: 500; white-space: nowrap; font-family: var(--font-body);
+  transition: all .2s;
+}
+.tab:hover:not(.active) { color: var(--ink); background: var(--card-2); }
+.tab.active {
+  background: var(--card); color: var(--ink);
+  border-color: var(--border); border-bottom-color: var(--card);
+  position: relative; bottom: -1px; font-weight: 600;
+}
+
+/* CONTENT */
+.content { padding: 28px 32px 60px; }
+.panel { display: none; animation: fadeIn .25s ease; }
+.panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+/* TIPOGRAFIA */
+.stitle {
+  font-family: var(--font-head); font-size: 1.35rem; font-weight: 500;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+  letter-spacing: -.015em;
+}
+.stitle-bar { width: 4px; height: 22px; border-radius: 2px; background: var(--navy); }
+.stitle-sub { font-size: 0.78rem; color: var(--muted); font-family: var(--font-body); font-weight: 400; margin-left: auto; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--bg-2) 100%);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 28px 32px; margin-bottom: 24px;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--navy), var(--teal), var(--gold), var(--sage));
+}
+.hero-data { font-family: var(--font-head); font-style: italic; font-size: 1.05rem; color: var(--muted); margin-bottom: 8px; }
+.hero-titulo { font-family: var(--font-head); font-size: 2.2rem; font-weight: 500; color: var(--ink); letter-spacing: -.025em; line-height: 1.1; margin-bottom: 12px; }
+.hero-titulo span { color: var(--navy); font-style: italic; }
+.hero-resumo { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; max-width: 760px; }
+.hero-resumo strong { color: var(--ink); font-weight: 600; }
+.hero-stats { display: flex; gap: 32px; margin-top: 18px; flex-wrap: wrap; padding-top: 18px; border-top: 1px dashed var(--border); }
+.h-stat { display: flex; flex-direction: column; }
+.h-stat-val { font-family: var(--font-head); font-size: 1.6rem; font-weight: 500; color: var(--navy); letter-spacing: -.01em; line-height: 1; }
+.h-stat-lbl { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-weight: 500; margin-top: 4px; }
+
+/* BLOCOS */
+.bloco-list { display: flex; flex-direction: column; gap: 14px; }
+.bloco-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px 24px;
+  display: grid; grid-template-columns: auto 1fr auto;
+  gap: 20px; align-items: flex-start;
+  transition: all .25s; box-shadow: var(--shadow-sm);
+}
+.bloco-card.feito { opacity: .55; background: var(--card-2); }
+.bloco-card.feito .bloco-mat { text-decoration: line-through; }
+.bloco-card:hover:not(.feito) { transform: translateY(-1px); box-shadow: var(--shadow); border-color: var(--border-2); }
+
+.bloco-num {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-style: italic; font-size: 1.7rem; font-weight: 500;
+  background: var(--card-2); border: 2px solid var(--border-2); color: var(--ink); flex-shrink: 0;
+}
+.bloco-card.b-port  .bloco-num { border-color: var(--m-port);  color: var(--m-port);  background: var(--plum-dim); }
+.bloco-card.b-info  .bloco-num { border-color: var(--m-info);  color: var(--m-info);  background: var(--teal-dim); }
+.bloco-card.b-gerais .bloco-num { border-color: var(--m-gerais); color: var(--m-gerais); background: var(--gold-dim); }
+.bloco-card.b-const .bloco-num { border-color: var(--m-const); color: var(--m-const); background: var(--navy-dim); }
+.bloco-card.b-trib  .bloco-num { border-color: var(--m-trib);  color: var(--m-trib);  background: var(--terra-dim); }
+.bloco-card.b-adm   .bloco-num { border-color: var(--m-adm);   color: var(--m-adm);   background: var(--sage-dim); }
+.bloco-card.b-cont  .bloco-num { border-color: var(--m-cont);  color: var(--m-cont);  background: var(--ochre-dim); }
+.bloco-card.b-audit .bloco-num { border-color: var(--m-audit); color: var(--m-audit); background: var(--rose-dim); }
+.bloco-card.b-ci    .bloco-num { border-color: var(--m-ci);    color: var(--m-ci);    background: var(--plum-dim); }
+
+.bloco-info { flex: 1; min-width: 0; }
+.bloco-horario { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-weight: 600; margin-bottom: 6px; }
+.bloco-mat { font-family: var(--font-head); font-size: 0.92rem; font-weight: 600; color: var(--ink-soft); margin-bottom: 4px; }
+.bloco-titulo { font-family: var(--font-head); font-size: 1.3rem; font-weight: 500; color: var(--ink); letter-spacing: -.015em; line-height: 1.25; margin-bottom: 8px; }
+.bloco-detalhe { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.55; }
+.bloco-detalhe strong { color: var(--ink); font-weight: 600; }
+
+.bloco-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.66rem; color: var(--gold); background: var(--gold-dim);
+  border: 1px solid var(--gold); padding: 3px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: .1em; font-weight: 700; margin-bottom: 8px;
+}
+
+.prof-selo {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 0.62rem; padding: 2px 8px; border-radius: 12px;
+  text-transform: uppercase; letter-spacing: .08em; font-weight: 700; margin-left: 6px;
+}
+.prof-denso { background: rgba(192,76,84,0.12); color: #B5404A; border: 1px solid rgba(192,76,84,0.3); }
+.prof-medio { background: rgba(192,142,60,0.12); color: #A57824; border: 1px solid rgba(192,142,60,0.3); }
+.prof-amplo { background: rgba(106,132,90,0.12); color: #4F6841; border: 1px solid rgba(106,132,90,0.3); }
+
+.bloco-meta {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  padding: 10px 0 0; margin-top: 10px;
+  border-top: 1px dashed var(--border);
+  font-size: 0.74rem; color: var(--muted);
+}
+.bloco-meta strong { color: var(--ink-soft); font-weight: 600; }
+.bloco-tempo {
+  font-family: var(--font-head); font-style: italic; font-size: 1.5rem;
+  font-weight: 500; color: var(--gold); text-align: right; flex-shrink: 0;
+}
+.bloco-tempo small {
+  display: block; font-style: normal; font-family: var(--font-body);
+  font-size: 0.62rem; color: var(--muted); text-transform: uppercase;
+  letter-spacing: .12em; font-weight: 600; margin-top: 2px;
+}
+.bloco-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+
+/* DIVISOR DIA */
+.dia-noite-divisor {
+  display: flex; align-items: center; gap: 14px;
+  margin: 24px 0 14px; padding: 8px 0;
+}
+.dia-noite-titulo {
+  font-family: var(--font-head); font-size: 1.1rem; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.dia-noite-linha { flex: 1; height: 1px; background: var(--border); }
+.dia-noite-titulo.bloco1 { color: var(--navy); }
+.dia-noite-titulo.bloco2 { color: var(--terra); }
+.dia-noite-titulo.bloco3 { color: var(--sage); }
+.dia-noite-sub { font-size: 0.78rem; color: var(--ink-soft); font-family: var(--font-body); margin-left: 4px; font-weight: 400; }
+
+/* TIMER */
+.timer-fixed {
+  position: fixed; bottom: 20px; right: 20px;
+  background: var(--card); border: 2px solid var(--terra);
+  border-radius: 16px; padding: 14px 18px;
+  box-shadow: 0 10px 40px rgba(192,116,84,.25);
+  z-index: 100; display: none; min-width: 260px;
+}
+.timer-fixed.active { display: block; animation: slideIn .3s ease; }
+@keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.timer-fixed-head { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--terra); font-weight: 700; margin-bottom: 4px; }
+.timer-fixed-mat { font-family: var(--font-head); font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.timer-fixed-time { font-family: var(--font-head); font-size: 2.2rem; font-weight: 600; color: var(--terra); letter-spacing: -.02em; line-height: 1; margin-bottom: 10px; }
+.timer-fixed-actions { display: flex; gap: 6px; }
+.timer-fixed-actions .btn { flex: 1; font-size: 0.7rem; padding: 6px 10px; }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(35,30,38,.5);
+  display: none; align-items: center; justify-content: center;
+  z-index: 200; padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+.modal-card {
+  background: var(--card); border-radius: var(--r); padding: 28px;
+  max-width: 460px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  border: 1px solid var(--border); animation: modalIn .25s ease;
+}
+@keyframes modalIn { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-titulo { font-family: var(--font-head); font-size: 1.5rem; font-weight: 600; margin-bottom: 6px; }
+.modal-sub { color: var(--ink-soft); font-size: 0.88rem; margin-bottom: 18px; }
+.modal-tempo-final {
+  background: var(--terra-dim); border: 1px solid var(--terra);
+  border-radius: 12px; padding: 14px 18px; text-align: center; margin-bottom: 18px;
+}
+.modal-tempo-final .lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--terra); font-weight: 600; }
+.modal-tempo-final .val { font-family: var(--font-head); font-size: 2rem; font-weight: 600; color: var(--terra); }
+.modal-form-row { margin-bottom: 14px; }
+.modal-form-row label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.modal-stars { display: flex; gap: 6px; }
+.modal-star {
+  width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--card-2); font-size: 1.1rem; cursor: pointer; transition: all .15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-star.active { background: var(--gold-dim); border-color: var(--gold); }
+.modal-form-row textarea {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: 8px; background: var(--card-2); color: var(--ink);
+  font-family: var(--font-body); font-size: 0.88rem; resize: vertical; min-height: 60px;
+}
+.modal-actions { display: flex; gap: 8px; margin-top: 18px; }
+.modal-actions .btn { flex: 1; }
+
+/* BOTÕES */
+.btn {
+  padding: 8px 16px; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: var(--card);
+  color: var(--ink-soft); font-family: var(--font-body);
+  font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: all .2s;
+}
+.btn:hover { border-color: var(--navy); color: var(--navy); }
+.btn.btn-primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+.btn.btn-primary:hover { background: #2e4a70; }
+.btn.btn-done { background: var(--sage-dim); border-color: var(--sage); color: var(--sage); }
+.btn.btn-step { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); font-weight: 600; }
+.btn.btn-step:hover { background: var(--gold); color: #fff; }
+.btn.btn-timer { background: var(--terra-dim); border-color: var(--terra); color: var(--terra); font-weight: 600; }
+.btn.btn-timer:hover { background: var(--terra); color: #fff; }
+.btn.btn-timer.running { background: var(--terra); color: #fff; animation: pulse-timer 2s ease-in-out infinite; }
+@keyframes pulse-timer { 0%, 100% { box-shadow: 0 0 0 0 rgba(192,116,84,.4); } 50% { box-shadow: 0 0 0 6px rgba(192,116,84,0); } }
+
+/* BOXES */
+.box {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 20px 24px; margin-bottom: 16px; box-shadow: var(--shadow-sm);
+}
+.box h3 { font-family: var(--font-head); font-size: 1.2rem; font-weight: 500; margin-bottom: 12px; }
+.box p { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 10px; }
+.box p:last-child { margin-bottom: 0; }
+.box strong { color: var(--ink); font-weight: 600; }
+.box .accent { color: var(--navy); font-style: italic; }
+.box-callout { border-left: 3px solid var(--navy); }
+.box-callout.terra { border-left-color: var(--terra); }
+.box-callout.sage  { border-left-color: var(--sage); }
+.box-callout.gold  { border-left-color: var(--gold); }
+.box-callout.rose  { border-left-color: var(--rose); }
+
+/* BADGE */
+.badge {
+  display: inline-flex; align-items: center; font-size: 0.62rem;
+  font-weight: 600; letter-spacing: .1em; padding: 3px 9px;
+  border-radius: 20px; text-transform: uppercase;
+}
+.b-navy  { background: var(--navy-dim);  color: var(--navy);  border: 1px solid var(--navy); }
+.b-terra { background: var(--terra-dim); color: var(--terra); border: 1px solid var(--terra); }
+.b-sage  { background: var(--sage-dim);  color: var(--sage);  border: 1px solid var(--sage); }
+.b-gold  { background: var(--gold-dim);  color: var(--gold);  border: 1px solid var(--gold); }
+.b-rose  { background: var(--rose-dim);  color: var(--rose);  border: 1px solid var(--rose); }
+.b-teal  { background: var(--teal-dim);  color: var(--teal);  border: 1px solid var(--teal); }
+.b-plum  { background: var(--plum-dim);  color: var(--plum);  border: 1px solid var(--plum); }
+.b-ochre { background: var(--ochre-dim); color: var(--ochre); border: 1px solid var(--ochre); }
+
+/* PROVA INFO */
+.prova-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px; margin-bottom: 22px;
+}
+.prova-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 16px 20px; box-shadow: var(--shadow-sm);
+}
+.prova-card-lbl { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; font-weight: 600; margin-bottom: 6px; }
+.prova-card-val { font-family: var(--font-head); font-size: 1.4rem; font-weight: 500; color: var(--ink); letter-spacing: -.01em; }
+.prova-card-sub { font-size: 0.74rem; color: var(--ink-soft); margin-top: 4px; }
+
+/* TRILHAS */
+.trilhas-toolbar {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px 18px; margin-bottom: 18px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 10; box-shadow: var(--shadow-sm);
+}
+.trilha-chip {
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 3px solid var(--cor, var(--border));
+  padding: 7px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 500;
+  color: var(--ink); cursor: pointer; transition: all .2s; font-family: var(--font-body);
+}
+.trilha-chip:hover { background: var(--card-2); }
+
+.trilha-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 22px 26px; margin-bottom: 16px; box-shadow: var(--shadow-sm);
+  scroll-margin-top: 90px;
+}
+.trilha-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap; margin-bottom: 14px;
+}
+.trilha-nome { font-family: var(--font-head); font-size: 1.5rem; font-weight: 500; letter-spacing: -.015em; }
+.trilha-sub { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+.trilha-stat { font-family: var(--font-head); font-style: italic; font-size: 1.15rem; color: var(--gold); text-align: right; }
+.trilha-stat small { display: block; font-style: normal; font-family: var(--font-body); font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; font-weight: 600; margin-top: 2px; }
+.trilha-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 18px; }
+.trilha-fill { height: 100%; border-radius: 3px; transition: width .5s ease; }
+
+.etapas { display: flex; flex-direction: column; gap: 4px; }
+.etapa-wrap { display: flex; flex-direction: column; }
+.etapa {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 16px; border-radius: var(--r-sm);
+  background: var(--card-2); cursor: pointer; transition: all .2s;
+}
+.etapa:hover { background: var(--bg-2); }
+.etapa.feita { opacity: .55; }
+.etapa.feita .etapa-titulo { text-decoration: line-through; }
+.etapa.atual { background: var(--gold-dim); border: 1px solid var(--gold); }
+.etapa.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+.etapa-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--card); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600; font-size: 0.78rem; color: var(--muted); flex-shrink: 0;
+}
+.etapa.feita .etapa-dot { background: var(--sage); border-color: var(--sage); color: #fff; }
+.etapa.atual .etapa-dot { background: var(--gold); border-color: var(--gold); color: #fff; }
+.etapa-titulo-wrap { flex: 1; min-width: 0; }
+.etapa-titulo { font-family: var(--font-head); font-size: 1.02rem; font-weight: 500; letter-spacing: -.005em; color: var(--ink); }
+.etapa-badge { font-size: 0.62rem; color: var(--gold); text-transform: uppercase; letter-spacing: .12em; font-weight: 700; margin-top: 2px; }
+.etapa-tempo { font-family: var(--font-head); font-style: italic; font-size: 0.88rem; color: var(--muted); white-space: nowrap; }
+.etapa-arrow { width: 20px; text-align: center; color: var(--muted); font-size: 0.7rem; }
+
+.etapa-detail {
+  background: var(--card-2); border: 1px solid var(--border);
+  border-top: none; padding: 18px 22px;
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+}
+.etapa-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 14px; }
+.etapa-desc strong { color: var(--ink); font-weight: 600; }
+.etapa-alerta {
+  background: var(--rose-dim); border-left: 3px solid var(--rose);
+  border-radius: var(--r-sm); padding: 10px 14px; margin: 10px 0;
+  font-size: 0.84rem; color: var(--ink-soft);
+}
+.etapa-alerta strong { color: var(--rose); }
+.etapa-meta {
+  display: flex; flex-wrap: wrap; gap: 18px;
+  padding: 10px 0; border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border); margin-bottom: 12px;
+  font-size: 0.78rem; color: var(--muted);
+}
+.etapa-meta strong { color: var(--gold); font-weight: 600; }
+.etapa-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* SEMANA */
+.semana { display: flex; flex-direction: column; gap: 12px; }
+.dia-row {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow-sm);
+}
+.dia-row.hoje-row { border-color: var(--navy); box-shadow: 0 0 0 2px var(--navy-dim); }
+.dia-head {
+  padding: 14px 22px; background: var(--card-2);
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px;
+}
+.dia-titulo { font-family: var(--font-head); font-size: 1.25rem; font-weight: 500; letter-spacing: -.01em; }
+.dia-titulo .dia-ap { font-style: italic; font-weight: 400; color: var(--muted); font-size: 0.92rem; }
+.dia-total { font-family: var(--font-head); font-style: italic; font-size: 0.92rem; color: var(--gold); }
+.dia-blocos { padding: 12px 22px; display: flex; flex-direction: column; gap: 8px; }
+.dia-bloco {
+  display: flex; align-items: center; gap: 14px;
+  padding: 6px 0; border-bottom: 1px dashed var(--border);
+}
+.dia-bloco:last-child { border-bottom: none; }
+.dia-bloco-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dia-bloco-mat { font-family: var(--font-head); font-size: 0.96rem; font-weight: 500; flex: 1; }
+.dia-bloco-h { font-family: var(--font-head); font-style: italic; color: var(--muted); font-size: 0.88rem; }
+
+/* DIÁRIO */
+.diario-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 720px) { .diario-grid { grid-template-columns: 1fr; } }
+.form-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow-sm); }
+.form-card h3 { font-family: var(--font-head); font-size: 1.2rem; font-weight: 500; margin-bottom: 16px; color: var(--navy); }
+.fg { margin-bottom: 14px; }
+.fg label { display: block; font-size: 0.68rem; color: var(--muted); margin-bottom: 6px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+.fg select, .fg input[type=number], .fg textarea {
+  width: 100%; background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r-sm); color: var(--ink); padding: 10px 14px;
+  font-size: 0.88rem; font-family: var(--font-body); resize: vertical;
+}
+.fg select:focus, .fg input:focus, .fg textarea:focus { outline: none; border-color: var(--navy); }
+.fg input[type=range] { width: 100%; accent-color: var(--navy); }
+.conf-row { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+.conf-val { color: var(--gold); font-weight: 700; }
+
+.log-list { max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.log-item {
+  background: var(--card-2); border-radius: var(--r-sm); padding: 12px 14px;
+  display: flex; justify-content: space-between; gap: 10px;
+  border-left: 3px solid var(--navy);
+}
+.log-mat { font-family: var(--font-head); font-weight: 500; font-size: 1rem; }
+.log-meta { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+.log-nota { font-style: italic; color: var(--ink-soft); font-size: 0.78rem; margin-top: 4px; }
+.log-del { color: var(--rose); cursor: pointer; opacity: .5; font-size: 1rem; flex-shrink: 0; }
+.log-del:hover { opacity: 1; }
+
+/* PROGRESSO */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 22px; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 20px; text-align: center; box-shadow: var(--shadow-sm); }
+.stat-val { font-family: var(--font-head); font-size: 2.2rem; font-weight: 500; color: var(--navy); letter-spacing: -.02em; line-height: 1; }
+.stat-lbl { font-size: 0.7rem; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: .1em; }
+
+.prog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.prog-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 18px; box-shadow: var(--shadow-sm); }
+.prog-card h4 { font-family: var(--font-head); font-size: 1.05rem; font-weight: 500; margin-bottom: 10px; }
+.prog-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+.prog-fill { height: 100%; border-radius: 4px; transition: width .5s; }
+.prog-pct { font-size: 0.74rem; color: var(--muted); display: flex; justify-content: space-between; }
+
+/* ROTINA */
+.rotina-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.rot-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-top: 3px solid var(--navy); border-radius: var(--r); padding: 16px 18px; box-shadow: var(--shadow-sm);
+}
+.rot-card.terra { border-top-color: var(--terra); }
+.rot-card.sage  { border-top-color: var(--sage); }
+.rot-card.gold  { border-top-color: var(--gold); }
+.rot-card.teal  { border-top-color: var(--teal); }
+.rot-bloco { font-size: 0.66rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+.rot-mat { font-family: var(--font-head); font-weight: 500; font-size: 1.1rem; margin-bottom: 4px; }
+.rot-h { font-family: var(--font-head); font-style: italic; font-size: 0.92rem; color: var(--gold); }
+.rot-tip { font-size: 0.78rem; color: var(--ink-soft); margin-top: 8px; line-height: 1.4; }
+
+/* EMPTY / ALERT */
+.empty { color: var(--muted); text-align: center; padding: 40px 20px; font-family: var(--font-head); font-style: italic; }
+.alert {
+  background: linear-gradient(135deg, var(--gold-dim), transparent);
+  border: 1px solid var(--gold); border-left: 4px solid var(--gold);
+  border-radius: var(--r); padding: 14px 20px; font-size: 0.88rem;
+  color: var(--ink-soft); margin-bottom: 20px; line-height: 1.55;
+}
+.alert strong { color: var(--gold); font-weight: 600; }
+
+/* LEGENDA PROF */
+.legenda-prof {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  padding: 14px 18px; background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); margin-bottom: 14px; font-size: 0.78rem; align-items: center;
+}
+.legenda-prof-lbl { font-size: 0.66rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 700; }
+.legenda-item { display: inline-flex; align-items: center; gap: 6px; }
+
+/* DIVISOR */
+.divider { display: flex; align-items: center; gap: 16px; margin: 32px 0 18px; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.divider-text { font-family: var(--font-head); font-style: italic; font-size: 0.92rem; color: var(--muted); }
+
+/* BACKUP */
+#backupText {
+  width: 100%; min-height: 80px; border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px; font-family: monospace; font-size: 0.75rem; resize: vertical;
+}
+
+/* EDITAL */
+.materia-stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 18px 22px;
+  border-left: 4px solid var(--navy); box-shadow: var(--shadow-sm);
+}
+.materia-stat-card.terra { border-left-color: var(--terra); }
+.materia-stat-card.sage  { border-left-color: var(--sage); }
+.materia-stat-card.gold  { border-left-color: var(--gold); }
+.materia-stat-card.teal  { border-left-color: var(--teal); }
+.materia-stat-card.rose  { border-left-color: var(--rose); }
+.materia-stat-card.plum  { border-left-color: var(--plum); }
+.materia-stat-card.ochre { border-left-color: var(--ochre); }
+.msc-nome { font-family: var(--font-head); font-size: 1.15rem; font-weight: 500; margin-bottom: 4px; }
+.msc-info { font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; }
+.msc-itens { font-family: var(--font-head); font-style: italic; font-size: 1.4rem; color: var(--navy); font-weight: 500; }
+.msc-itens small { font-size: 0.68rem; color: var(--muted); font-style: normal; font-weight: 400; font-family: var(--font-body); letter-spacing: .08em; text-transform: uppercase; margin-left: 6px; }
+
+@media (max-width: 600px) {
+  .hdr { padding: 16px; }
+  .content { padding: 16px 16px 60px; }
+  .cd-row { margin: 12px 16px 0; }
+  .tabs-wrap { padding: 12px 16px 0; }
+  .bloco-card { grid-template-columns: auto 1fr; }
+  .bloco-tempo { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-logo">A+</div>
+    <div>
+      <div class="hdr-title">Aprova Map+ · Auditor Triunfo/PB</div>
+      <div class="hdr-sub">🎯 Estuda Sá · Instituto Educa Assessoria · Nível Superior · 1 vaga</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-date" id="dateBadge">—</div>
+    <div class="hdr-motto">"Uma questão de cada vez. E essa questão vale a vaga."</div>
+  </div>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="cd-row">
+  <div class="cd-card">
+    <div class="cd-lbl">🎯 Prova Objetiva</div>
+    <div class="cd-num" id="cdProva">—</div>
+    <div class="cd-info">Domingo, 30/08/2026 · TARDE</div>
+  </div>
+  <div class="cd-card terra">
+    <div class="cd-lbl">📝 Inscrições</div>
+    <div class="cd-num" id="cdInsc">—</div>
+    <div class="cd-info">27/05 a 30/06/2026 · R$ 110</div>
+  </div>
+  <div class="cd-card sage">
+    <div class="cd-lbl">📋 Gabarito</div>
+    <div class="cd-num" id="cdGabarito">—</div>
+    <div class="cd-info">01/08/2026 (preliminar)</div>
+  </div>
+  <div class="cd-card gold">
+    <div class="cd-lbl">💰 Salário</div>
+    <div class="cd-num">R$ 3.242</div>
+    <div class="cd-info">30h semanais · 1 vaga AC · Triunfo/PB</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active" onclick="goTab('hoje')">📋 Hoje</div>
+    <div class="tab" onclick="goTab('semana')">🗓 Semana</div>
+    <div class="tab" onclick="goTab('trilhas')">🎯 Trilhas</div>
+    <div class="tab" onclick="goTab('edital')">📑 Edital</div>
+    <div class="tab" onclick="goTab('estrategia')">🧠 Estratégia</div>
+    <div class="tab" onclick="goTab('rotina')">⏱ Rotina</div>
+    <div class="tab" onclick="goTab('diario')">📝 Diário</div>
+    <div class="tab" onclick="goTab('progresso')">📊 Progresso</div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- HOJE -->
+<div class="panel active" id="panel-hoje">
+  <div class="hero">
+    <div class="hero-data" id="hojeData">—</div>
+    <div class="hero-titulo" id="hojeTitulo">Bom dia, <span>Estuda Sá</span></div>
+    <div class="hero-resumo" id="hojeResumo">Carregando seu plano de hoje…</div>
+    <div class="hero-stats" id="hojeStats"></div>
+  </div>
+
+  <div class="stitle">
+    <div class="stitle-bar"></div>Seu plano de hoje
+    <div class="stitle-sub" id="hojeBlocoCount">— blocos</div>
+  </div>
+
+  <div id="blocoList" class="bloco-list"></div>
+
+  <div class="alert" style="margin-top:24px">
+    <strong>💡 Método reverso aplicado ao Auditor:</strong> em cada bloco, <strong>comece com 5–10 questões</strong> do tema (Educa/bancas similares), depois leia a teoria do que errou. Contabilidade Pública e Auditoria exigem muita questão prática — não apenas leitura de lei. Marque "Etapa concluída" quando conseguir acertar sistematicamente, não pela passagem do tempo.
+  </div>
+</div>
+
+<!-- SEMANA -->
+<div class="panel" id="panel-semana">
+  <div class="alert">
+    <strong>🗓 Sua semana · janela 13h–18h (5h/dia):</strong> Português + Informática diários (bases eliminatórias). Matérias Específicas rotacionam de tarde. <strong>Sábado = simulado cronometrado. Domingo = revisão + descanso noite.</strong>
+  </div>
+  <div class="stitle"><div class="stitle-bar"></div>Plano por dia</div>
+  <div class="semana" id="semanaTimeline"></div>
+</div>
+
+<!-- TRILHAS -->
+<div class="panel" id="panel-trilhas">
+  <div class="box" style="border-left:4px solid var(--navy);">
+    <h3 style="color:var(--navy)">🎯 Os números de dias ao lado de cada etapa</h3>
+    <p>Mostram <strong>quantos dias você deve dedicar àquela etapa</strong> — é uma referência de ritmo, não um prazo fixo. Se precisar de mais tempo em Contabilidade Pública ou Auditoria (as matérias mais densas do cargo), tudo bem — a etapa só avança quando você clica <em>"✓ Etapa concluída"</em>. Os dias estimados evitam que você fique tempo demais em tópicos leves e pouco tempo nos pesados.</p>
+  </div>
+
+  <div class="trilhas-toolbar">
+    <span style="font-size:0.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:600;">Ver matéria:</span>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;" id="trilhasChips"></div>
+  </div>
+
+  <div class="legenda-prof">
+    <span class="legenda-prof-lbl">📚 Profundidade variável:</span>
+    <span class="legenda-item"><span class="prof-selo prof-denso">🔴 denso</span> 30+ questões + teoria + ficha</span>
+    <span class="legenda-item"><span class="prof-selo prof-medio">🟡 médio</span> 15 questões + resumo</span>
+    <span class="legenda-item"><span class="prof-selo prof-amplo">🟢 amplo</span> 10 questões + lei seca</span>
+  </div>
+
+  <div id="trilhasContent"></div>
+</div>
+
+<!-- EDITAL -->
+<div class="panel" id="panel-edital">
+  <div class="alert">
+    <strong>📑 Edital 01/2026 · Prefeitura de Triunfo/PB · Auditor · Nível Superior</strong> — Banca: Instituto Educa Assessoria. Prova em 30/08/2026 TARDE. 1 vaga AC. Requisito: Curso Superior em Ciências Jurídicas e/ou Ciências Contábeis, e/ou Economia e/ou Administração + Registro no Conselho.
+  </div>
+
+  <div class="prova-grid">
+    <div class="prova-card"><div class="prova-card-lbl">Banca</div><div class="prova-card-val">Inst. Educa</div><div class="prova-card-sub">Edital nº 01/2026</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Vagas</div><div class="prova-card-val">1 vaga</div><div class="prova-card-sub">Ampla Concorrência</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Salário</div><div class="prova-card-val">R$ 3.242</div><div class="prova-card-sub">30h semanais</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Inscrição</div><div class="prova-card-val">R$ 110</div><div class="prova-card-sub">27/05 a 30/06/2026</div></div>
+  </div>
+
+  <div class="prova-grid" style="margin-top:14px">
+    <div class="prova-card"><div class="prova-card-lbl">Português</div><div class="prova-card-val">10q · Peso 2</div><div class="prova-card-sub">20 pontos</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Informática</div><div class="prova-card-val">5q · Peso 2</div><div class="prova-card-sub">10 pontos</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Conhec. Gerais</div><div class="prova-card-val">10q · Peso 1</div><div class="prova-card-sub">10 pontos</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Conhec. Específicos</div><div class="prova-card-val">20q · Peso 3</div><div class="prova-card-sub">60 pontos · 6 matérias</div></div>
+  </div>
+  <div class="prova-grid" style="margin-top:14px">
+    <div class="prova-card"><div class="prova-card-lbl">Total Objetiva</div><div class="prova-card-val">50 questões</div><div class="prova-card-sub">100 pontos</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Aprovação</div><div class="prova-card-val">≥ 50 pts</div><div class="prova-card-sub">Não zerar nenhuma disciplina</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">+ Títulos</div><div class="prova-card-val">até 10 pts</div><div class="prova-card-sub">Classificatório · Doutorado 3pts · Mestrado 2pts · Espec 1pt</div></div>
+    <div class="prova-card"><div class="prova-card-lbl">Duração</div><div class="prova-card-val">4 horas</div><div class="prova-card-sub">Nível Superior · Tarde</div></div>
+  </div>
+
+  <div class="divider"><span class="divider-text">Português — 10 questões · Peso 2 · 20 pontos</span></div>
+  <div class="box" style="border-left:4px solid var(--m-port)">
+    <h3 style="color:var(--m-port)">📖 LÍNGUA PORTUGUESA</h3>
+    <p>Análise e interpretação de texto (compreensão geral; argumentação; elementos de coesão; inferências; estrutura e organização do texto e dos parágrafos). Tipologia e gêneros textuais. Adequação da linguagem ao tipo de documento. <strong>Adequação do formato do texto ao gênero.</strong> Emprego de elementos de referenciação, substituição e repetição, conectores e sequenciação textual. <strong>Figuras de linguagem.</strong> <strong>Emprego dos pronomes demonstrativos.</strong> Relações semânticas entre orações/períodos/parágrafos (oposição/contraste, conclusão, concessão, causalidade, adição, alternância). Sinonímia e antonímia. Sintaxe da oração (período simples; termos fundamentais e acessórios; tipos de predicado) e do período (coordenação e subordinação). Funções do que e do se. Acento grave. Sinais de pontuação e suas funções. Ortografia. Concordâncias verbal e nominal. Regências verbal e nominal. Emprego de tempos e modos verbais. Formação de tempos compostos. Reescritura de frases e parágrafos. Substituição de palavras. Retextualização. Acentuação tônica e gráfica. Ortoépia e prosódia. Homônimos e parônimos. Classes de palavras. Estrutura e formação de palavras. Colocação pronominal (próclise, mesóclise, ênclise). Literatura Brasileira.</p>
+  </div>
+
+  <div class="divider"><span class="divider-text">Informática — 5 questões · Peso 2 · 10 pontos</span></div>
+  <div class="box" style="border-left:4px solid var(--m-info)">
+    <h3 style="color:var(--m-info)">💻 NOÇÕES DE INFORMÁTICA</h3>
+    <p>Hardware (CPU, memórias RAM/ROM/cache, HD/SSD, periféricos). Software (tipos, sistemas operacionais, comparação Windows/Linux/macOS). Redes de computadores (topologias, TCP/IP, OSI, HTTP/HTTPS, FTP, SMTP, firewall, VPN). MS Word (formatação, mala direta, sumário, revisão). MS Excel (fórmulas PROCV, SOMASE, SE, tabelas dinâmicas, formatação condicional). MS PowerPoint. Internet e navegadores (abas, favoritos, segurança, cookies). Motores de busca (operadores booleanos AND/OR/NOT, filtros). <strong>Avaliação de confiabilidade de sites e informações na internet.</strong> Correio eletrônico (CC, CCO, phishing, etiqueta, criptografia). Segurança da informação (malware, vírus, ransomware, senhas, 2FA). Privacidade (LGPD, criptografia, VPN, Tor). Google Drive, OneDrive, videoconferência (Zoom, Teams). <strong>Edição de imagem: Paint</strong> (corte, redimensionamento, texto) e noções básicas de <strong>GIMP</strong> (camadas, seleção, ajustes de cores). Banco de dados básico (Access). LGPD — princípios, direitos dos titulares, obrigações dos controladores. <strong>Direitos Autorais e Uso Ético de Software:</strong> proteção de software, pirataria. Licenciamento: freeware, shareware, open-source (Linux, GIMP, LibreOffice), licenças comerciais.</p>
+  </div>
+
+  <div class="divider"><span class="divider-text">Conhecimentos Gerais — 10 questões · Peso 1 · 10 pontos</span></div>
+  <div class="box" style="border-left:4px solid var(--m-gerais)">
+    <h3 style="color:var(--m-gerais)">🌍 CONHECIMENTOS GERAIS</h3>
+    <p>O Brasil e o Estado da Paraíba: política, economia, regiões brasileiras, sociedade, educação, segurança, artes e literatura. <strong>História, Educação, Cultura e Geografia.</strong> Escritores e poetas famosos da Paraíba e do Brasil. Atualidades regionais, nacionais e internacionais. <strong>Doenças, surtos e epidemias</strong> veiculados pela mídia. <strong>Mundo do trabalho: profissões e inovações tecnológicas. Sociedade, internet e fake news. Movimentos sociais.</strong> Trabalho, Previdência e outras questões sociais. Globalização. <strong>Multiculturalidade, Pluralidade e Diversidade Cultural.</strong> Tecnologias de Informação e Comunicação. Lei Orgânica do Município de Triunfo. Políticas de inclusão e combate à discriminação. Direitos das minorias (indígenas, quilombolas, LGBTQIA+, PcD). <strong>Principais setores da economia brasileira:</strong> agropecuária, indústria, serviços. Globalização e blocos econômicos (Mercosul, NAFTA, UE). Políticas monetária e fiscal. Banco Central. Programas sociais. Sustentabilidade e ODS/Agenda 2030. Mudanças climáticas. <strong>Legislação ambiental: Código Florestal, Lei da Mata Atlântica, Lei de Crimes Ambientais.</strong></p>
+  </div>
+
+  <div class="divider"><span class="divider-text">Conhecimentos Específicos — 20 questões · Peso 3 · 60 pontos</span></div>
+
+  <div class="box" style="border-left:4px solid var(--m-const);margin-top:14px">
+    <h3 style="color:var(--m-const)">⚖️ DIREITO CONSTITUCIONAL</h3>
+    <p>Conceito e tipos de Constituição. Interpretação e integração. Reforma constitucional. Supremacia. Controle de Constitucionalidade (difuso e concentrado). O município na CF e na Constituição Estadual. CF/1988 e emendas: Princípios Fundamentais; Direitos e Garantias Fundamentais; Organização do Estado; Organização dos Poderes; Defesa do Estado; Tributação e Orçamento; Ordem Econômica e Financeira; Ordem Social; ADCT. Mandado de Segurança e Ação Popular.</p>
+  </div>
+
+  <div class="box" style="border-left:4px solid var(--m-trib);margin-top:14px">
+    <h3 style="color:var(--m-trib)">💰 DIREITO TRIBUTÁRIO</h3>
+    <p>Tributo: conceito, classificação, espécies, preço público. Princípios gerais. CTN. Sistema Constitucional Tributário (competência, repartição de receitas). Legislação tributária (vigência, aplicação, hermenêutica). Obrigação Tributária (hipótese de incidência, sujeição passiva, responsabilidade). Crédito Tributário (lançamento e suas modalidades). Suspensão, extinção (pagamento, compensação, prescrição, decadência) e exclusão (isenção, anistia). Garantias e privilégios. ISS, Contribuição de Melhoria, ITBI, IPTU, Taxas.</p>
+  </div>
+
+  <div class="box" style="border-left:4px solid var(--m-adm);margin-top:14px">
+    <h3 style="color:var(--m-adm)">🏛 DIREITO ADMINISTRATIVO</h3>
+    <p>Conceito e princípios (explícitos e implícitos). Administração Pública (estrutura, poderes, deveres, uso e abuso do poder, organização brasileira). Poderes administrativos (vinculado, discricionário, hierárquico, disciplinar, de polícia, PAD). Atos administrativos (conceito, atributos, classificação, espécies, anulação e revogação). Licitação e contratos (Lei 14.133/2021). Serviços públicos (direta/indireta, delegados, convênios, consórcios). Servidores públicos (direitos, deveres, responsabilidades, improbidade — Lei 8.429/92). <strong>Domínio público:</strong> terras e águas públicas, jazidas, florestas, fauna, espaço aéreo, proteção ambiental, tombamento. <strong>Intervenção na propriedade:</strong> desapropriação, requisição, servidão administrativa, ocupação temporária, limitação administrativa. Função social da propriedade. <strong>Intervenção no domínio econômico — repressão ao abuso do poder econômico.</strong> Controle da Administração (administrativo, legislativo, Tribunal de Contas, controle de legalidade e <strong>Fazenda Pública em juízo</strong>). Responsabilidade Civil do Estado. MS. <strong>Ação Civil Pública. Ação por Improbidade Administrativa. Ação Popular.</strong></p>
+  </div>
+
+  <div class="box" style="border-left:4px solid var(--m-cont);margin-top:14px">
+    <h3 style="color:var(--m-cont)">📊 CONTABILIDADE PÚBLICA</h3>
+    <p>Orçamento Público: conceito, tipos e princípios. PPA, LDO, LOA. Elaboração, aprovação, execução e avaliação. Classificação Institucional e Funcional-Programática. Contabilidade Pública: conceito, campo de atuação, regimes contábeis. Patrimônio das entidades públicas (qualitativo e quantitativo, financeiro e permanente). Avaliação patrimonial. Receita pública (enfoques patrimonial e orçamentário). Despesa pública (enfoques, reconhecimento, RP processados e não processados). Bens públicos, dívida ativa e dívida pública. Inventário. Regime de Adiantamento. Créditos Adicionais. Demonstrações Contábeis (Balanço Orçamentário, Financeiro, Patrimonial, DVP, DFC, DMPL). Análise de balanços públicos. LRF (Lei Complementar 101/2000).</p>
+  </div>
+
+  <div class="box" style="border-left:4px solid var(--m-audit);margin-top:14px">
+    <h3 style="color:var(--m-audit)">🔍 AUDITORIA</h3>
+    <p>Auditoria de regularidade e operacional. Instrumentos de fiscalização (auditoria, levantamento, monitoramento, acompanhamento, inspeção). Planejamento de auditoria. Plano baseado em risco. Atividades preliminares. Escopo. Materialidade, risco e relevância. Exame e avaliação do controle interno. Riscos inerente, de controle e de detecção. Matriz de Planejamento. Programa de auditoria. Papéis de trabalho. Testes. Amostragem. Execução: técnicas e procedimentos (exame documental, inspeção física, conferência de cálculos, observação, entrevista, circularização, conciliações, análise de contas, revisão analítica). Evidências. Caracterização de achados. Matriz de achados e responsabilização. Relatórios de auditoria. Monitoramento. Documentação.</p>
+  </div>
+
+  <div class="box" style="border-left:4px solid var(--m-ci);margin-top:14px">
+    <h3 style="color:var(--m-ci)">🛡 CONTROLE INTERNO</h3>
+    <p>Sistema de Controle Interno (implantação, funcionamento, estruturação e operacionalização). NBC TI 01 – Auditoria Interna (estudo e avaliação do sistema contábil e controles internos). NBC TA 265 – Comunicação de Deficiências de Controle Interno. COSO – ERM (2017). ABNT NBR ISO 31000:2018. Controle Interno e Externo na CF/1988. Controle Parlamentar e dos Tribunais de Contas. Controle Social e Administrativo. Governança no Setor Público. LAI (Lei 12.527/11). Lei de Improbidade (8.429/92). Lei Anticorrupção (12.846/13). Estatuto Jurídico da Empresa Pública (13.303/16). <strong>Lei de Licitações e Contratos: Lei nº 8.666/93 e Lei nº 14.133/2021</strong> — procedimento licitatório, contratos, fiscalização. <strong>Atribuições do Cargo de Auditor.</strong></p>
+  </div>
+
+  <div class="divider"><span class="divider-text">🛡 Critérios de aprovação · Prova de Títulos</span></div>
+  <div class="box" style="border-left:4px solid var(--gold)">
+    <h3 style="color:var(--gold)">🎯 Para passar você precisa:</h3>
+    <p>1. <strong>≥ 50% da objetiva</strong> (50 pts de 100) + Prova de Títulos</p>
+    <p>2. <strong>Não zerar nenhuma disciplina</strong> — crítico para candidato único!</p>
+    <p>3. <strong>Títulos (até 10 pts):</strong> Doutorado 3pts · Mestrado 2pts · Especialização 1pt · Experiência 0,5pt/ano (máx 4pts)</p>
+    <p>4. Desempate: ≥60 anos → Específicos → Português → Informática → Gerais → maior idade → sorteio</p>
+  </div>
+  <div class="box" style="border-left:4px solid var(--rose)">
+    <h3 style="color:var(--rose)">⚠️ Pontos críticos</h3>
+    <p><strong>1 vaga apenas:</strong> você precisa ser a melhor. Não apenas passar — dominar.</p>
+    <p><strong>Específicos valem 60 dos 100 pts:</strong> Contabilidade Pública + Auditoria + Controle Interno + Dir. Administrativo são o coração do cargo. Foco máximo aqui.</p>
+    <p><strong>Não zere nada:</strong> mesmo Conhecimentos Gerais (peso 1) pode te eliminar se zerar.</p>
+    <p><strong>Gabarito preliminar sai 01/08 — mas a prova é 30/08.</strong> Datas estranhas no edital — fique atenta a retificações no site educapb.com.br.</p>
+  </div>
+</div>
+
+<!-- ESTRATÉGIA -->
+<div class="panel" id="panel-estrategia">
+  <div class="box" style="border-left:4px solid var(--navy)">
+    <h3 style="color:var(--navy)">🎯 Sua estratégia para Auditor Triunfo/PB</h3>
+    <p><strong>1. Os Específicos decidem:</strong> 60 dos 100 pts vêm das 6 matérias específicas. Contabilidade Pública, Auditoria e Controle Interno são o núcleo duro — quem domina essas três está na frente.</p>
+    <p><strong>2. Método reverso funciona aqui:</strong> especialmente em Contabilidade e Auditoria, que têm muita questão prática. Comece pela questão, erre, entenda onde errou, aí leia a teoria.</p>
+    <p><strong>3. Janela das 13h às 18h:</strong> 5 horas diárias de foco sólido. Distribua em 3 blocos com intervalos.</p>
+    <p><strong>4. Português e Informática todo dia:</strong> são eliminatórios pela regra de não zerar nenhuma disciplina. 30 minutos diários garantem base.</p>
+    <p><strong>5. Títulos contam:</strong> se tiver especialização (1pt), mestrado (2pts) ou doutorado (3pts) na área — junte os documentos agora para entrega em 29–30/10/2026.</p>
+  </div>
+
+  <div class="stitle"><div class="stitle-bar"></div>🔄 Estudo Reverso · aplicado ao cargo</div>
+  <div class="box" style="border-left:4px solid var(--sage)">
+    <h3 style="color:var(--sage)">Como aplicar em Contabilidade e Auditoria</h3>
+    <p>1. Abra 8–10 questões do tema (plataforma paga, Educa ou bancas similares)</p>
+    <p>2. Resolva sem consultar — 20 min cronometrados</p>
+    <p>3. Corrija e anote cada erro com a matéria e o motivo</p>
+    <p>4. AGORA leia a teoria do(s) tópico(s) que errou (não leia tudo — só o que errou)</p>
+    <p>5. Ficha-resumo de 1 página com os conceitos críticos</p>
+    <p>6. Resolva mais 5 questões similares para confirmar o aprendizado</p>
+    <p class="accent">Para Dir. Constitucional e Tributário: leitura de lei seca primeiro + questões logo em seguida. Esses são mais decoreba e menos interpretação.</p>
+  </div>
+
+  <div class="stitle"><div class="stitle-bar"></div>📅 Linha do tempo até 30/08/2026</div>
+  <div class="box" style="border-left:4px solid var(--teal)">
+    <h3 style="color:var(--teal)">Roteiro de 12 semanas (09/06 → 30/08)</h3>
+    <p><strong>Semana 1–3 (09/06 → 29/06):</strong> Bases. Dir. Constitucional completo + Dir. Tributário (CTN + ISS + IPTU). Português: interpretação + concordâncias. Informática: pacote Office + redes. Inscrição até 30/06.</p>
+    <p><strong>Semana 4–6 (30/06 → 19/07):</strong> Núcleo duro. Dir. Administrativo completo + Contabilidade Pública (orçamento, receita, despesa, balanços). Simulados parciais aos sábados.</p>
+    <p><strong>Semana 7–9 (20/07 → 08/08):</strong> Auditoria + Controle Interno completos. Revisão Dir. Tributário. Conhecimentos Gerais (atualidades + Paraíba). Simulados completos.</p>
+    <p><strong>Semana 10–11 (09/08 → 22/08):</strong> Revisão geral por matéria. Foco em pontos de erro do simulado. 1 simulado completo/semana.</p>
+    <p><strong>Reta Final (23/08 → 30/08):</strong> Revisão leve + descanso. Evitar aprender conteúdo novo. 28–29/08: descanso real. 30/08: PROVA.</p>
+  </div>
+
+  <div class="stitle"><div class="stitle-bar"></div>⚠️ Atenção especial · Contabilidade Pública</div>
+  <div class="box" style="border-left:4px solid var(--terra)">
+    <h3 style="color:var(--terra)">Por que Contabilidade exige mais atenção</h3>
+    <p><strong>É a matéria mais extensa dos Específicos</strong> e a que mais candidatos negligenciam. Orçamento + Demonstrações Contábeis + LRF juntos costumam valer 3–5 questões.</p>
+    <p><strong>Pré-requisito necessário:</strong> entender a diferença entre regime de caixa e competência, e entre orçamentário e patrimonial. Se isso não estiver claro, tudo fica confuso.</p>
+    <p><strong>Como vencer:</strong> comece pelos Balanços (o que é cada um), depois Receita e Despesa, depois LRF. Questões práticas valem mais do que decorar nomes.</p>
+  </div>
+</div>
+
+<!-- ROTINA -->
+<div class="panel" id="panel-rotina">
+  <div class="alert">
+    <strong>⏱ Sua rotina · 13h–18h (5h/dia):</strong> 3 blocos de estudo com intervalos. Específicos no início quando a mente está mais fresca. Português + Informática no final do dia como "manutenção".
+  </div>
+
+  <div class="stitle"><div class="stitle-bar"></div>📋 Estrutura diária (13h–18h)</div>
+  <div class="rotina-grid">
+    <div class="rot-card">
+      <div class="rot-bloco">Bloco 1 · 13h–14h30</div>
+      <div class="rot-mat">Específico Principal</div>
+      <div class="rot-h">1h30</div>
+      <div class="rot-tip">Matéria mais pesada do dia — Contabilidade, Auditoria, Controle Interno ou Dir. Administrativo. Método reverso completo: questões → erro → teoria → ficha.</div>
+    </div>
+    <div class="rot-card terra">
+      <div class="rot-bloco">Intervalo · 14h30–14h45</div>
+      <div class="rot-mat">Descanso ativo</div>
+      <div class="rot-h">15 min</div>
+      <div class="rot-tip">Sair da frente da tela. Água. Alongamento. Mente descansa antes do próximo bloco.</div>
+    </div>
+    <div class="rot-card sage">
+      <div class="rot-bloco">Bloco 2 · 14h45–16h15</div>
+      <div class="rot-mat">Específico Secundário</div>
+      <div class="rot-h">1h30</div>
+      <div class="rot-tip">Rodízio entre Dir. Constitucional, Dir. Tributário e o específico restante. Lei seca + questões.</div>
+    </div>
+    <div class="rot-card terra">
+      <div class="rot-bloco">Intervalo · 16h15–16h30</div>
+      <div class="rot-mat">Descanso</div>
+      <div class="rot-h">15 min</div>
+      <div class="rot-tip">Pausa real antes do bloco final.</div>
+    </div>
+    <div class="rot-card gold">
+      <div class="rot-bloco">Bloco 3 · 16h30–18h</div>
+      <div class="rot-mat">Português + Informática</div>
+      <div class="rot-h">1h30</div>
+      <div class="rot-tip">45 min Português (questões de interpretação + gramática) + 45 min Informática (questões). Não precisa ler teoria todo dia — questões sustentam o ritmo.</div>
+    </div>
+  </div>
+
+  <div class="stitle"><div class="stitle-bar"></div>📊 Distribuição semanal</div>
+  <div class="box">
+    <p><strong>Total diário:</strong> ~5h líquidas (13h–18h com intervalos)</p>
+    <p><strong>Total semanal (6 dias):</strong> ~30h · Domingo = revisão leve 2h + descanso noite</p>
+    <p><strong>Distribuição por matéria (aproximada):</strong></p>
+    <p>Contabilidade Pública ~8h · Auditoria ~6h · Dir. Administrativo ~5h · Controle Interno ~4h · Dir. Tributário ~4h · Dir. Constitucional ~4h · Português ~5h/semana · Informática ~3h/semana · Conhec. Gerais ~2h/semana (semana 7–9)</p>
+  </div>
+
+  <div class="stitle"><div class="stitle-bar"></div>🛡 Regras de ouro</div>
+  <div class="box">
+    <p><strong>1. Português e Informática TODO DIA:</strong> mesmo que seja só 30 min de questões. Não zerar essas matérias na prova é fundamental.</p>
+    <p><strong>2. Sábado = Simulado cronometrado:</strong> 50 questões em 4h, sem consulta. Corrija no mesmo dia.</p>
+    <p><strong>3. Domingo = revisão estratégica (2h) + descanso noite:</strong> fichas das matérias estudadas na semana. Não avance conteúdo novo.</p>
+    <p><strong>4. Contabilidade tem prioridade nos primeiros 4 meses:</strong> é a matéria mais negligenciada e mais pontuada nos Específicos.</p>
+    <p><strong>5. Prepare os documentos de títulos agora:</strong> entrega é 29–30/10/2026. Especialização, mestrado, experiência profissional documentada.</p>
+    <p><strong>6. Reta final (23–30/08):</strong> revisão leve + simulados. Sem conteúdo novo. Sono e alimentação em dia.</p>
+  </div>
+</div>
+
+<!-- DIÁRIO -->
+<div class="panel" id="panel-diario">
+  <div class="diario-grid">
+    <div class="form-card">
+      <h3>➕ Registrar sessão</h3>
+      <div class="fg"><label>Matéria</label><select id="selMat"></select></div>
+      <div class="fg"><label>Horas estudadas</label><input type="number" id="fHoras" min="0.25" max="8" step="0.25" value="1.5"></div>
+      <div class="fg">
+        <label>Confiança: <span class="conf-val" id="confLbl">3</span>/5</label>
+        <input type="range" id="fConf" min="1" max="5" value="3" oninput="document.getElementById('confLbl').textContent=this.value">
+        <div class="conf-row"><span>insegura</span><span>dominando!</span></div>
+      </div>
+      <div class="fg">
+        <label>O que estudei</label>
+        <textarea id="fNota" rows="3" placeholder="Ex: 10 questões Auditoria — riscos inerente/controle. Erro em amostragem..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="addLog()" style="width:100%;margin-top:6px">✓ Registrar sessão</button>
+    </div>
+    <div class="form-card">
+      <h3>📅 Histórico</h3>
+      <div class="log-list" id="logList"><div class="empty">Nenhuma sessão ainda. Começa hoje!</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESSO -->
+<div class="panel" id="panel-progresso">
+  <div class="stats-row" id="statsProgress"></div>
+
+  <div class="stitle"><div class="stitle-bar"></div>Progresso por matéria</div>
+  <div class="prog-grid" id="progGrid"></div>
+
+  <div class="stitle"><div class="stitle-bar"></div>💾 Backup do seu progresso</div>
+  <div class="box" style="border-left:4px solid var(--gold)">
+    <p style="margin-bottom:14px;font-size:0.9rem;color:var(--ink-soft)">
+      Seu progresso fica salvo neste navegador. <strong>Antes de abrir uma versão nova do painel</strong> (ou trocar de dispositivo), faça o backup aqui e restaure depois.
+    </p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <button class="btn btn-done" onclick="exportarBackup()">⬇️ Baixar backup</button>
+      <button class="btn" onclick="document.getElementById('importFile').click()">⬆️ Restaurar backup</button>
+      <input type="file" id="importFile" accept=".json,.txt" style="display:none" onchange="importarBackup(event)">
+    </div>
+    <div style="margin-top:14px">
+      <div style="font-size:0.82rem;color:var(--ink-soft);margin-bottom:6px">Ou copie/cole o texto do backup:</div>
+      <textarea id="backupText" placeholder="Cole aqui o texto do backup e clique em Restaurar do texto"></textarea>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button class="btn" onclick="copiarBackupTexto()">📋 Gerar texto do backup</button>
+        <button class="btn" onclick="restaurarDoTexto()">✓ Restaurar do texto</button>
+      </div>
+    </div>
+    <div id="backupMsg" style="margin-top:10px;font-size:0.85rem"></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- TIMER FLUTUANTE -->
+<div class="timer-fixed" id="timerFixed">
+  <div class="timer-fixed-head">⏱ Sessão em andamento</div>
+  <div class="timer-fixed-mat" id="timerFixedMat">—</div>
+  <div class="timer-fixed-time" id="timerFixedTime">00:00:00</div>
+  <div class="timer-fixed-actions">
+    <button class="btn" onclick="pauseTimer()" id="timerPauseBtn">⏸ Pausar</button>
+    <button class="btn btn-done" onclick="stopTimer()">✓ Finalizar</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalFim">
+  <div class="modal-card">
+    <div class="modal-titulo">Sessão concluída ✨</div>
+    <div class="modal-sub">Como foi? Avalie sua confiança e deixe uma nota para se lembrar do que ficou faltando.</div>
+    <div class="modal-tempo-final">
+      <div class="lbl" id="modalMatNome">—</div>
+      <div class="val" id="modalTempoFinal">0h 0min</div>
+    </div>
+    <div class="modal-form-row">
+      <label>Confiança no conteúdo estudado</label>
+      <div class="modal-stars" id="modalStars">
+        <button class="modal-star" data-c="1" onclick="setStar(1)">😵</button>
+        <button class="modal-star" data-c="2" onclick="setStar(2)">😕</button>
+        <button class="modal-star" data-c="3" onclick="setStar(3)">😐</button>
+        <button class="modal-star" data-c="4" onclick="setStar(4)">🙂</button>
+        <button class="modal-star" data-c="5" onclick="setStar(5)">😎</button>
+      </div>
+    </div>
+    <div class="modal-form-row">
+      <label>Nota opcional — o que estudou, o que ficou</label>
+      <textarea id="modalNota" placeholder="Ex: Terminei lançamento tributário. Errei questões sobre modalidades — revisar amanhã."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="cancelarFinal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmarFinal()">✓ Registrar sessão</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// TRILHAS — cargo AUDITOR · Edital 01/2026 · Triunfo/PB
+// Fiel ao conteúdo programático do edital
+// ═══════════════════════════════════════
+const TRILHAS = {
+  port: {
+    nome: 'Língua Portuguesa',
+    cor: 'var(--m-port)',
+    info: '10q · Peso 2 · 20 pts · NÃO ZERAR · todo dia',
+    etapas: [
+      { titulo: 'Interpretação · tipologia · adequação de linguagem e formato', desc: '<strong>Base de tudo.</strong> Compreensão geral do texto; argumentação; inferências; estrutura e organização do texto e dos parágrafos. Tipologia textual (narrativo, descritivo, dissertativo, injuntivo). Gêneros textuais. <strong>Adequação da linguagem ao tipo de documento.</strong> <strong>Adequação do formato do texto ao gênero</strong> (o edital cita os dois separadamente — formato ≠ linguagem).', alerta: 'Educa cobra muito interpretação. Leia o texto 2x antes de marcar. Nunca interprete além do texto.', tempo: '3 dias', meta: '30 questões de interpretação' },
+      { titulo: 'Coesão, sequenciação e figuras de linguagem', desc: '<strong>Edital cita literalmente.</strong> Elementos de referenciação, substituição e repetição. Conectores e outros elementos de sequenciação textual. Relações semânticas (oposição/contraste, conclusão, concessão, causalidade, adição, alternância). <strong>Figuras de linguagem</strong> (metáfora, metonímia, antítese, paradoxo, ironia, hipérbole, eufemismo, catacrese, personificação — cobradas no texto como recurso de estilo).', alerta: 'Figuras de linguagem aparecem em questões de interpretação, não só em Literatura. Educa costuma perguntar o efeito que a figura produz no texto.', tempo: '3 dias', meta: '30 questões + tabela de conectivos' },
+      { titulo: 'Ortografia e acentuação gráfica', desc: 'Novo Acordo Ortográfico. Regras de uso do hífen. Trema. Homônimos e parônimos. Acentuação: oxítonas, paroxítonas, proparoxítonas. Acentos diferenciais. Ortoépia e prosódia.', alerta: 'Parônimos são armadilha clássica: iminente × eminente, retificar × ratificar, absolver × absorver.', tempo: '3 dias', meta: '30 questões' },
+      { titulo: 'Classes de palavras · pronomes demonstrativos em destaque', desc: 'Todas as classes: substantivo, adjetivo, artigo, numeral, pronome (pessoais, possessivos, <strong>demonstrativos — este/esse/aquele e variações</strong>, indefinidos, interrogativos, relativos), verbo (flexões, regulares, irregulares, auxiliares, formas nominais), advérbio, preposição, conjunção, interjeição. Estrutura e formação de palavras (derivação, composição). Colocação pronominal (próclise, mesóclise, ênclise). <em>O edital cita "Emprego dos pronomes demonstrativos" especificamente — saber quando usar este/esse/aquele em contexto textual.</em>', alerta: 'Este (perto de quem fala) × esse (perto de quem ouve / já mencionado) × aquele (distante de ambos / mencionado antes). Educa adora cobrar o pronome demonstrativo no texto.', tempo: '5 dias', meta: '50 questões' },
+      { titulo: 'Sintaxe: termos da oração', desc: 'Período simples: termos essenciais (sujeito e predicado — tipos), integrantes (OD, OI, CN, Agente da Passiva), acessórios (adjunto adnominal, adjunto adverbial, aposto, vocativo). Tipos de predicado.', alerta: 'Base para concordância e regência. Sem isso, os próximos tópicos ficam impossíveis.', tempo: '5 dias', meta: '40 questões' },
+      { titulo: 'Sintaxe: período composto (coordenação e subordinação)', desc: '<strong>Edital cita literalmente.</strong> Coordenação: sindéticas (tipos) e assindéticas. Subordinação: substantivas, adjetivas (restritiva × explicativa — impacto na pontuação), adverbiais (tipos). Funções do que e do se.', alerta: 'Adjetiva restritiva sem vírgula, explicativa com vírgula. Cai SEMPRE.', tempo: '5 dias', meta: '50 questões' },
+      { titulo: 'Concordância verbal e nominal', desc: '<strong>Edital cita literalmente.</strong> Concordância verbal: regra geral + casos especiais (sujeito composto, posposto, expressões partitivas, com %, pronomes relativos). Concordância nominal: adjetivo + casos especiais (anexo, obrigado, mesmo, meio, bastante).', alerta: 'Educa adora sujeito posposto e pronome relativo "que" com antecedente plural.', tempo: '5 dias', meta: '60 questões' },
+      { titulo: 'Regência verbal e nominal + Crase', desc: '<strong>Edital cita literalmente ambos.</strong> Verbos de regência dupla (assistir, visar, implicar, esquecer, lembrar, namorar, aspirar). Regência nominal (substantivos, adjetivos, advérbios que exigem preposição). Crase: regra geral, obrigatória, proibida, facultativa.', alerta: 'Tabela de verbos de dupla regência é obrigatória. Crase: macete da troca por "ao" funciona para 90% dos casos.', tempo: '5 dias', meta: '60 questões' },
+      { titulo: 'Pontuação + Reescritura de frases', desc: '<strong>Edital cita ambos.</strong> Vírgula (8 casos). Ponto-e-vírgula. Dois-pontos. Aspas. Travessão. Reescritura mantendo o sentido: paráfrase, retextualização, substituição de palavras e trechos.', alerta: '"Qual reescritura mantém o sentido?" é pergunta clássica Educa.', tempo: '4 dias', meta: '40 questões' },
+      { titulo: 'Literatura Brasileira', desc: '<strong>Edital cita para Nível Superior.</strong> Classicismo, Barroco, Neoclassicismo, Romantismo (Alencar, Castro Alves). Realismo (Machado de Assis) e Naturalismo (Aluísio de Azevedo). Parnasianismo (Olavo Bilac). Simbolismo (Cruz e Souza). Modernismo (Manuel Bandeira, Drummond, Graciliano, João Cabral). Autores contemporâneos.', alerta: 'Educa pode cobrar noções gerais de cada escola literária. Foco em características e autores principais.', tempo: '3 dias', meta: '20 questões' },
+    ]
+  },
+
+  info: {
+    nome: 'Noções de Informática',
+    cor: 'var(--m-info)',
+    info: '5q · Peso 2 · 10 pts · NÃO ZERAR · todo dia',
+    etapas: [
+      { titulo: 'Hardware e Software · fundamentos', desc: '<strong>Edital cita literalmente.</strong> Componentes internos: CPU, RAM, ROM, cache, HD, SSD, placa-mãe, fonte. Periféricos: entrada (teclado, mouse, scanner), saída (monitor, impressora), E/S (pendrives, HDs externos). Tipos de software: sistemas operacionais, aplicativos, utilitários, drivers. Windows vs Linux vs macOS.', alerta: 'Conceitos básicos mas cobrados. Não confundir RAM (volátil) com HD/SSD (não volátil).', tempo: '2 dias', meta: '15 questões' },
+      { titulo: 'Redes de computadores', desc: '<strong>Edital cita literalmente.</strong> Topologias (estrela, barramento, anel, malha). Ethernet vs Wi-Fi. TCP/IP: modelo OSI vs TCP/IP, endereçamento IP, máscara de sub-rede. Protocolos: HTTP/HTTPS, FTP, SMTP, POP3/IMAP. Firewall e antivírus. VPN.', alerta: 'CC vs CCO no e-mail é um dos tópicos mais cobrados. HTTP vs HTTPS (segurança do cadeado).', tempo: '2 dias', meta: '20 questões' },
+      { titulo: 'MS Word · Excel · PowerPoint', desc: '<strong>Edital cita literalmente cada um.</strong> Word: formatação, cabeçalho/rodapé, numeração, mala direta, sumário automático, revisão ortográfica. Excel: SOMA, MÉDIA, SE, PROCV/PROCH, CONT.SE, SOMASE, tabelas dinâmicas, formatação condicional, gráficos. PowerPoint: slides, animações, transições, modo apresentação.', alerta: 'PROCV e SE são as funções mais cobradas do Excel em concursos. Word: mala direta e controle de alterações.', tempo: '3 dias', meta: '30 questões' },
+      { titulo: 'Internet · e-mail · segurança digital · avaliação de confiabilidade', desc: '<strong>Edital cita literalmente.</strong> Navegadores (abas, favoritos, cookies, modo anônimo, certificados de segurança, controle de pop-ups). Motores de busca (operadores booleanos AND/OR/NOT, filtros de pesquisa por data/idioma/tipo de arquivo). <strong>Avaliação de confiabilidade de sites e informações na internet.</strong> E-mail: CC vs CCO, phishing, assinatura institucional, respostas automáticas, criptografia para e-mails sensíveis. Segurança: malware, vírus, worms, trojans, ransomware, 2FA, senhas seguras, backups, atualizações. Criptografia (simétrica vs assimétrica). VPN, Tor, navegação anônima. Proteção de dados em redes sociais.', alerta: 'Phishing e engenharia social são os temas de segurança mais cobrados. CC deixa endereços visíveis, CCO não. Avaliação de confiabilidade: HTTPS, certificado SSL, domínio reconhecido.', tempo: '2 dias', meta: '20 questões' },
+      { titulo: 'LGPD · Direitos Autorais e Uso Ético de Software · ferramentas colaborativas', desc: '<strong>Edital cita literalmente todos.</strong> LGPD: princípios (finalidade, adequação, necessidade, livre acesso), direitos dos titulares (acesso, correção, anonimização, eliminação), obrigações dos controladores (transparência, segurança, comunicação de incidentes). <strong>Direitos Autorais e Uso Ético de Software:</strong> proteção de software, direitos do desenvolvedor, pirataria. <strong>Licenciamento de software:</strong> freeware, shareware, open-source, licenças comerciais, compliance. Diferença freeware × shareware × software comercial. Open-source: exemplos (Linux, GIMP, LibreOffice), vantagens/desvantagens. Google Drive, OneDrive. Zoom, Teams. Banco de dados básico (Access). <strong>Edição de imagem: Paint</strong> (corte, redimensionamento, texto) e noções básicas de <strong>GIMP</strong> (camadas, ferramentas de seleção, ajustes de cores).', alerta: 'LGPD cai com frequência crescente. Diferença controlador × operador. Licenciamento: open-source não significa gratuito — significa que o código-fonte é aberto.', tempo: '2 dias', meta: '15 questões' },
+    ]
+  },
+
+  gerais: {
+    nome: 'Conhecimentos Gerais',
+    cor: 'var(--m-gerais)',
+    info: '10q · Peso 1 · 10 pts · NÃO ZERAR · semanas 7–9',
+    etapas: [
+      { titulo: 'Brasil e Paraíba: história, política, economia, geografia e cultura', desc: '<strong>Edital cita literalmente.</strong> Brasil e Paraíba: política, economia, regiões brasileiras, sociedade, educação, segurança, artes e literatura. <strong>História, Educação, Cultura e Geografia.</strong> Escritores e poetas famosos da Paraíba e do Brasil. Assuntos de economia, ecologia, história, política, meio ambiente, justiça, segurança pública, saúde, cultura, religião, qualidade de vida, esportes, turismo, georreferenciamento. Lei Orgânica do Município de Triunfo. Aspectos históricos, econômicos, geográficos e culturais do Município de Triunfo/PB.', alerta: 'Educa cobra atualidades locais (Paraíba, Triunfo). Pesquise brevemente o município, sua história e a Lei Orgânica de Triunfo.', tempo: '2 dias', meta: '15 questões' },
+      { titulo: 'Atualidades: fake news, saúde, trabalho, globalização e movimentos sociais', desc: '<strong>Edital cita literalmente cada um.</strong> Atualidades regionais, nacionais e internacionais veiculadas pela mídia. <strong>Doenças, surtos e epidemias</strong> divulgados pela mídia. <strong>Mundo do trabalho: profissões e inovações tecnológicas.</strong> <strong>Sociedade, internet e fake news.</strong> <strong>Movimentos sociais.</strong> Trabalho, Previdência e outras questões sociais. <strong>Multiculturalidade, Pluralidade e Diversidade Cultural.</strong> Globalização: conceitos, efeitos e implicações sociais, econômicas, políticas e culturais. Tecnologias de Informação e Comunicação: conceitos, efeitos e implicações sociais, econômicas, políticas e culturais.', alerta: 'Questões de atualidades não têm gabarito previsível — foque em grandes temas do período de estudo (saúde pública, fake news, mercado de trabalho e movimentos sociais recentes).', tempo: '2 dias', meta: '15 questões' },
+      { titulo: 'Economia brasileira: setores, globalização, políticas e sustentabilidade', desc: '<strong>Edital detalha literalmente cada item.</strong> <strong>Principais setores da economia brasileira:</strong> Agropecuária (agricultura, pecuária, exportação de commodities). Indústria (tipos, polo de Manaus, automotivo, siderurgia). Serviços (comércio, turismo, setor financeiro, TI). Importância para o PIB e empregos. Globalização e blocos econômicos (Mercosul, NAFTA, União Europeia). Fluxo de capitais e investimentos estrangeiros. Impactos de crises globais no Brasil. Política monetária (juros, inflação, câmbio) e fiscal (impostos, gastos, orçamento). Papel do Banco Central e Tesouro Nacional. Programas sociais. Sustentabilidade e ODS/Agenda 2030. Tecnologias limpas e economia circular.', alerta: 'O edital é muito detalhado em economia — mais do que o comum para Gerais. Questões podem cobrar diferença entre política monetária e fiscal, ou papéis do Banco Central.', tempo: '2 dias', meta: '15 questões' },
+      { titulo: 'Meio ambiente: mudanças climáticas e legislação ambiental', desc: '<strong>Edital cita literalmente.</strong> Mudanças climáticas e consequências: aquecimento global, derretimento das calotas polares, elevação do nível do mar. Desertificação e degradação dos solos. Políticas públicas de proteção ao meio ambiente. <strong>Legislação ambiental brasileira: Código Florestal, Lei da Mata Atlântica, Lei de Crimes Ambientais.</strong> Políticas Nacionais de inclusão e combate à discriminação. Direitos das minorias (indígenas, quilombolas, LGBTQIA+, pessoas com deficiência).', alerta: 'Legislação ambiental específica cai com frequência crescente. Pelo menos conhecer o objeto de cada lei: o que protege o Código Florestal, o que é a Lei de Crimes Ambientais (9.605/98), o que é a Lei da Mata Atlântica (11.428/06).', tempo: '1 dia', meta: '10 questões' },
+    ]
+  },
+
+  const: {
+    nome: 'Direito Constitucional',
+    cor: 'var(--m-const)',
+    info: '⚠️ Específico · ~3–4 questões · lei seca + jurisprudência',
+    etapas: [
+      { titulo: 'Teoria da Constituição e controle de constitucionalidade', desc: '<strong>Edital cita literalmente.</strong> Conceito e tipos de constituição. Interpretação e integração. Reforma (emendas, limites). Supremacia constitucional. Controle de constitucionalidade: difuso (controle concreto, qualquer juiz, efeito inter partes) e concentrado (STF, ADI/ADC/ADPF, efeito erga omnes). Constitucionalidade face à CE. O município na CF e na CE.', alerta: 'Diferença difuso × concentrado é clássica de concurso. Ações diretas no STF: decorar nomenclaturas.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Princípios Fundamentais e Direitos e Garantias (Arts. 1–17)', desc: '<strong>Edital cita literalmente.</strong> Fundamentos da República (art. 1º). Objetivos fundamentais (art. 3º). Direitos sociais (art. 6º e 7º). Direitos individuais e coletivos (art. 5º) — inciso a inciso. Remédios constitucionais (HC, MS, MI, HD, AP). Partidos políticos.', alerta: 'Art. 5º é o mais cobrado de toda a CF. Ler inciso por inciso é indispensável. Não tentar decorar tudo — focar nos incisos que aparecem em questões.', tempo: '5 dias', meta: '50 questões sobre Art. 5º' },
+      { titulo: 'Organização do Estado · Arts. 18–43', desc: 'Federação e repartição de competências (arts. 21–24). Município na CF (arts. 29–31). Organização dos municípios. Lei Orgânica. Princípios de organização e competências municipais.', alerta: 'Para o cargo de auditor municipal, arts. 29–31 são relevantes. Competências exclusivas, concorrentes e suplementares.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Organização dos Poderes · Administração Pública e Finanças', desc: '<strong>Edital cita literalmente.</strong> Poder Legislativo (arts. 44–75). Poder Executivo (arts. 76–91). Poder Judiciário (arts. 92–126). Funções essenciais à Justiça. Administração Pública (arts. 37–41): princípios LIMPE, servidores públicos, concurso público. Tributação e Orçamento (arts. 145–169). Ordem Econômica e Social.', alerta: 'Art. 37 com o princípio LIMPE é importantíssimo para auditor. MS e Ação Popular (art. 5º, LXIX e LXXIII) também.', tempo: '4 dias', meta: '40 questões' },
+    ]
+  },
+
+  trib: {
+    nome: 'Direito Tributário',
+    cor: 'var(--m-trib)',
+    info: '⚠️ Específico · ~3–4 questões · CTN + tributos municipais',
+    etapas: [
+      { titulo: 'Tributo: conceito, classificação e espécies', desc: '<strong>Edital cita literalmente.</strong> Conceito de tributo (art. 3º CTN). Classificação: impostos, taxas, contribuições de melhoria, contribuições especiais, empréstimos compulsórios. Diferença tributo × preço público. Princípios gerais do Direito Tributário (legalidade, anterioridade, irretroatividade, não-confisco, igualdade, uniformidade).', alerta: 'As 5 espécies tributárias (teoria pentapartite) × teoria tripartite. Educa pode cobrar qualquer uma.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'CTN: Sistema Constitucional Tributário e Legislação', desc: '<strong>Edital cita literalmente.</strong> Competência tributária: privativa, comum, cumulativa, residual. Repartição de receitas (FPM, FPE). Legislação tributária: vigência, aplicação, interpretação e integração. LINDB aplicada ao direito tributário.', alerta: 'Competência tributária para o auditor municipal: quais tributos são do município (ISS, IPTU, ITBI, taxas municipais, contribuição de melhoria).', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Obrigação Tributária e Crédito Tributário', desc: '<strong>Edital cita literalmente.</strong> Obrigação tributária (principal e acessória). Fato gerador, hipótese de incidência, fato imponível. Sujeição passiva, contribuinte, responsável. Responsabilidade tributária. Crédito tributário: conceito, natureza, lançamento (de ofício, por declaração, por homologação).', alerta: 'As modalidades de lançamento são clássicas de concurso. Lançamento por homologação é o mais usado na prática (ICMS, IR).', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Suspensão, Extinção e Exclusão do Crédito Tributário', desc: '<strong>Edital cita literalmente cada um.</strong> Suspensão: moratória, depósito integral, recurso administrativo, MS, parcelamento. Extinção: pagamento, compensação, transação, remissão, decadência, prescrição, conversão do depósito, decisão admin/judicial. Exclusão: isenção e anistia. Diferenças entre os institutos.', alerta: 'Saber classificar cada hipótese como suspensão, extinção ou exclusão é o tipo de questão que cai. Decore a lista de cada categoria.', tempo: '3 dias', meta: '30 questões' },
+      { titulo: 'Tributos Municipais: ISS, IPTU, ITBI, Taxas, CM', desc: '<strong>Edital cita literalmente cada um.</strong> ISS: fato gerador (prestação de serviços), base de cálculo, sujeito ativo/passivo, conceito de serviço, serviços na competência municipal. IPTU: fato gerador, base (valor venal), progressividade. ITBI: fato gerador, imunidades, incidência na transferência. Taxas: diferença de imposto, fato gerador (poder de polícia e serviço público). Contribuição de Melhoria: fato gerador (valorização imobiliária), limites individual e total.', alerta: 'Para auditor municipal, ISS e IPTU são os tributos mais relevantes do dia a dia. Saber calcular ISS sobre serviço específico.', tempo: '4 dias', meta: '35 questões' },
+    ]
+  },
+
+  adm: {
+    nome: 'Direito Administrativo',
+    cor: 'var(--m-adm)',
+    info: '⚠️ Específico · ~3–4 questões · ADM + Licitação + Servidores',
+    etapas: [
+      { titulo: 'Conceito, princípios e poderes administrativos', desc: '<strong>Edital cita literalmente.</strong> Conceito subjetivo e objetivo. Princípios explícitos (LIMPE) e implícitos (razoabilidade, proporcionalidade, continuidade, autotutela, supremacia do interesse público). Poderes: vinculado, discricionário, hierárquico, disciplinar, de polícia. Uso e abuso de poder. Processo Administrativo Disciplinar (PAD).', alerta: 'Princípios são a base de toda questão de ADM. LIMPE + razoabilidade + proporcionalidade são os mais cobrados.', tempo: '3 dias', meta: '30 questões' },
+      { titulo: 'Atos administrativos', desc: '<strong>Edital cita literalmente.</strong> Conceito. Atributos: presunção de legitimidade, imperatividade, autoexecutoriedade, tipicidade. Requisitos de validade: competência, finalidade, forma, motivo, objeto (COMFIMO). Espécies (normativos, ordinatórios, negociais, enunciativos, punitivos). Anulação vs revogação vs convalidação.', alerta: 'Diferença anulação (ilegalidade, retroage) × revogação (conveniência/oportunidade, não retroage) é certeira em concurso.', tempo: '3 dias', meta: '30 questões' },
+      { titulo: 'Organização Administrativa: direta e indireta', desc: 'Organização da Administração brasileira. Administração Direta (União, Estados, DF, Municípios). Indireta: autarquias, fundações públicas, empresas públicas, sociedades de economia mista. Características de cada ente. Serviços delegados (concessão, permissão, autorização). Convênios e consórcios.', alerta: 'Diferença entre os 4 entes da Administração Indireta é questão clássica. Empresa pública vs SEM: capital e formação societária.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Licitação e Contratos (Lei 14.133/2021)', desc: '<strong>Edital cita a Lei 14.133/2021 literalmente.</strong> Conceito e objetivos. Princípios licitatórios. Modalidades (pregão, concorrência, concurso, leilão, diálogo competitivo). Dispensa e inexigibilidade. Contratos administrativos: conceito, características, espécies, cláusulas exorbitantes, duração, prorrogação, rescisão.', alerta: 'Nova Lei de Licitações (14.133/21). Não confundir com a 8.666 — Educa pode cobrar as novidades da lei nova.', tempo: '4 dias', meta: '35 questões' },
+      { titulo: 'Servidores Públicos · Domínio Público · Intervenção na Propriedade e no Domínio Econômico', desc: '<strong>Edital cita literalmente cada item.</strong> Servidores públicos: regime jurídico, direitos, deveres, responsabilidades, improbidade (Lei 8.429/92 com alterações da Lei 14.230/21 — exige dolo). <strong>Domínio público:</strong> terras e águas públicas, jazidas, florestas, fauna, espaço aéreo, proteção ambiental, tombamento. <strong>Intervenção na propriedade:</strong> desapropriação, requisição, servidão administrativa, ocupação temporária, limitação administrativa. Função social da propriedade. <strong>Intervenção no domínio econômico:</strong> repressão ao abuso do poder econômico. Controle da Administração Pública: administrativo, legislativo, controle externo (Tribunal de Contas), controle de legalidade e <strong>Fazenda Pública em juízo.</strong> Responsabilidade Civil do Estado. MS. <strong>Ação Civil Pública. Ação por Improbidade Administrativa. Ação Popular.</strong>', alerta: 'O edital cita MS + ACP + Ação de Improbidade + Ação Popular — as 4 ações de controle judicial. Diferença entre elas: quem pode propor e o que protege. Domínio público e intervenção na propriedade são tópicos que candidatos costumam pular — não pule.', tempo: '4 dias', meta: '35 questões' },
+    ]
+  },
+
+  cont: {
+    nome: 'Contabilidade Pública',
+    cor: 'var(--m-cont)',
+    info: '🔴 PRIORIDADE MÁXIMA · Específico · ~4–5 questões · matéria mais extensa',
+    etapas: [
+      { titulo: 'Orçamento Público: conceito, princípios, PPA/LDO/LOA', desc: '<strong>Edital cita literalmente cada um.</strong> Conceito de orçamento público. Tipos (autorizativo vs impositivo). Princípios orçamentários: unidade, universalidade, anualidade, exclusividade, especificidade, publicidade, equilíbrio, programação. Plano Plurianual (PPA): vigência 4 anos. Lei de Diretrizes Orçamentárias (LDO). Lei Orçamentária Anual (LOA). Relações entre os três instrumentos.', alerta: 'A tríade PPA-LDO-LOA e os prazos de encaminhamento ao Legislativo são cobradíssimos. Art. 165 da CF é leitura obrigatória.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Elaboração, aprovação, execução e avaliação do orçamento', desc: '<strong>Edital cita literalmente cada fase.</strong> Elaboração (Poder Executivo). Aprovação (Poder Legislativo). Execução: empenho (ordinário, global, estimativo), liquidação, pagamento. Descentralização de recursos. Avaliação e controle. Classificação Institucional e Funcional-Programática (função, subfunção, programa, ação, subtítulo).', alerta: 'As 3 etapas da despesa (empenho → liquidação → pagamento) são questão garantida. Diferença empenho ordinário × global × estimativo.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Receita Pública: enfoques patrimonial e orçamentário', desc: '<strong>Edital cita literalmente ambos enfoques.</strong> Receita sob enfoque orçamentário: previsão, lançamento, arrecadação, recolhimento. Estágios da receita. Codificação orçamentária da receita. Receita sob enfoque patrimonial (NBCASP): reconhecimento quando do fato gerador. Receita corrente vs capital. Receita originária vs derivada.', alerta: 'Diferença entre receita orçamentária e patrimonial é fundamental para concursos de auditor. Muitos candidatos confundem os dois enfoques.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Despesa Pública: enfoques, empenho, RP e Créditos Adicionais', desc: '<strong>Edital cita literalmente.</strong> Despesa sob enfoque orçamentário vs patrimonial. Reconhecimento da despesa. Restos a Pagar: processados (liquidados) vs não processados (apenas empenhados). Regime de Adiantamento (suprimento de fundos). Créditos Adicionais: suplementares (reforço), especiais (nova dotação), extraordinários (emergência). Superávit financeiro e excesso de arrecadação.', alerta: 'RP processados × não processados é questão clássica. Créditos adicionais: decorar quando precisa de autorização legislativa.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Patrimônio Público: conceito e componentes', desc: '<strong>Edital cita literalmente.</strong> Patrimônio público (ativo, passivo e PL). Patrimônio financeiro vs permanente. Avaliação dos componentes patrimoniais (NBCASP — MCASP). Bens públicos: conceito, classificação (uso comum, uso especial, dominicais). Dívida ativa e dívida pública: aspectos contábeis. Inventário nas entidades públicas: objeto, finalidade, procedimentos, aspectos contábeis.', alerta: 'MCASP (Manual de Contabilidade Aplicada ao Setor Público) é a referência técnica. Bens públicos e sua classificação caem com frequência.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Demonstrações Contábeis do Setor Público', desc: '<strong>Edital cita literalmente cada demonstração.</strong> Balanço Orçamentário (receitas e despesas orçamentárias). Balanço Financeiro (ingressos e dispêndios financeiros). Balanço Patrimonial (ativo/passivo/PL patrimonial). Demonstração das Variações Patrimoniais (DVP). Demonstração dos Fluxos de Caixa (DFC). Demonstração das Mutações do Patrimônio Líquido (DMPL). Como identificar cada uma e interpretá-las.', alerta: 'Saber para que serve CADA demonstração e o que aparece em cada uma é a questão mais certeira de Contabilidade Pública. Faça um quadro-resumo comparativo.', tempo: '4 dias', meta: '35 questões' },
+      { titulo: 'LRF (Lei Complementar 101/2000) + Análise de Balanços', desc: '<strong>Edital cita literalmente ambos.</strong> Lei de Responsabilidade Fiscal: responsabilidade na gestão fiscal, receita e despesa pública, endividamento, operações de crédito, restos a pagar, transparência e controle. Análise de balanços públicos: indicadores de liquidez, endividamento e execução orçamentária.', alerta: 'LRF é leitura obrigatória para auditor. Art. 1º (conceito de responsabilidade fiscal) + limites de pessoal (arts. 18–23) são os mais cobrados.', tempo: '3 dias', meta: '30 questões' },
+    ]
+  },
+
+  audit: {
+    nome: 'Auditoria',
+    cor: 'var(--m-audit)',
+    info: '🔴 PRIORIDADE MÁXIMA · Específico · ~3–4 questões · técnicas e procedimentos',
+    etapas: [
+      { titulo: 'Conceitos, tipos e instrumentos de fiscalização', desc: '<strong>Edital cita literalmente.</strong> Auditoria de regularidade (conformidade) vs auditoria operacional (desempenho, economicidade, eficiência, eficácia, efetividade). Diferença entre: auditoria, levantamento, monitoramento, acompanhamento e inspeção. Auditoria interna vs externa. Controle interno vs controle externo.', alerta: 'Decorar a diferença entre os 5 instrumentos de fiscalização (auditoria, levantamento, monitoramento, acompanhamento, inspeção) — Educa cobra nomenclatura.', tempo: '2 dias', meta: '20 questões' },
+      { titulo: 'Planejamento de auditoria: risco, materialidade, escopo', desc: '<strong>Edital cita literalmente.</strong> Plano de auditoria baseado no risco. Atividades preliminares. Determinação de escopo. Materialidade: conceito e determinação. Risco de auditoria: inerente × de controle × de detecção. Relevância. Avaliação do ambiente de controle. Matriz de Planejamento.', alerta: 'Risco de auditoria = Inerente × Controle × Detecção. O auditor influencia apenas o risco de detecção. Questão clássica.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'Execução: técnicas, procedimentos e evidências', desc: '<strong>Edital cita literalmente cada técnica.</strong> Exame documental. Inspeção física. Conferência de cálculos. Observação direta. Entrevista. Circularização (confirmação de terceiros). Conciliações. Análise de contas contábeis. Revisão analítica. Amostragem. Evidências: suficiência, pertinência, confiabilidade. Caracterização de achados de auditoria (condição, critério, causa, efeito).', alerta: 'Os 4 atributos do achado de auditoria (condição, critério, causa, efeito) são questão garantida. Circularização é a mais confiável das técnicas de confirmação.', tempo: '3 dias', meta: '30 questões' },
+      { titulo: 'Comunicação, relatório e monitoramento', desc: '<strong>Edital cita literalmente.</strong> Papéis de trabalho: função, conteúdo, guarda. Matriz de achados. Matriz de responsabilização. Relatórios de auditoria: estrutura e conteúdo. Tipos de opinião (sem ressalva, com ressalva, adverso, abstenção). Monitoramento das recomendações. Documentação da auditoria.', alerta: 'Os 4 tipos de opinião do auditor são questão clássica. Relatório com ressalva ≠ relatório adverso — decore a diferença.', tempo: '2 dias', meta: '20 questões' },
+    ]
+  },
+
+  ci: {
+    nome: 'Controle Interno',
+    cor: 'var(--m-ci)',
+    info: '🔴 PRIORIDADE MÁXIMA · Específico · ~3–4 questões · COSO + NBC + Lei Anticorrupção',
+    etapas: [
+      { titulo: 'Sistema de Controle Interno: conceito, estrutura e normas', desc: '<strong>Edital cita literalmente.</strong> Sistema de Controle Interno na CF/1988 (arts. 70–74). Distinção entre controle interno (executivo) e controle externo (legislativo + TCU/TCEs). Controle parlamentar. Controle dos Tribunais de Contas. Controle social. Controle administrativo. NBC TI 01 – Auditoria Interna (estudo e avaliação do sistema contábil e de controles internos). NBC TA 265 – comunicação de deficiências de controle interno.', alerta: 'Arts. 70–74 da CF são obrigatórios para auditor. Leitura de cada inciso do art. 74 (sistema de controle interno do Poder Executivo) é indispensável.', tempo: '3 dias', meta: '25 questões' },
+      { titulo: 'COSO – ERM 2017 e ABNT NBR ISO 31000:2018', desc: '<strong>Edital cita literalmente ambos.</strong> COSO ERM 2017: componentes (Governança e Cultura, Estratégia e Definição de Objetivos, Desempenho, Revisão e Monitoramento, Informação/Comunicação/Reporte). Princípios. Categorias de objetivos. Gerenciamento de riscos corporativos. ISO 31000:2018: princípios, estrutura e processo de gestão de riscos. Diferença COSO × ISO 31000.', alerta: 'COSO ERM 2017 tem 5 componentes e 20 princípios. Educa pode cobrar a estrutura geral — não precisa memorizar tudo, mas entender os 5 componentes.', tempo: '3 dias', meta: '20 questões' },
+      { titulo: 'Governança no Setor Público', desc: '<strong>Edital cita literalmente.</strong> Conceito de governança pública. Princípios da governança (transparência, integridade, accountability, equidade). Diferença entre governança e gestão. Boas práticas. Governança das contratações. Papel do controle interno na governança.', alerta: 'Accountability (prestação de contas responsável) é conceito central. Governance × Management: governança define direção, gestão executa.', tempo: '2 dias', meta: '15 questões' },
+      { titulo: 'LAI, Improbidade, Lei Anticorrupção, Estatuto EP e Licitações (8.666/93 + 14.133/21)', desc: '<strong>Edital cita literalmente cada lei.</strong> LAI — Lei 12.527/2011: transparência ativa e passiva, prazos, sigilo. Lei 8.429/1992 (Improbidade Administrativa): espécies, penas — com as alterações da Lei 14.230/2021 (exige dolo). Lei 12.846/2013 (Anticorrupção): responsabilidade objetiva da PJ, acordos de leniência. Lei 13.303/2016 (Estatuto EP/SEM): governança corporativa, compliance, auditoria. <strong>Leis de Licitações e Contratos: Lei 8.666/1993 E Lei 14.133/2021</strong> — procedimento licitatório, contratos, fiscalização (o edital cita AMBAS, saiba as principais diferenças entre a lei antiga e a nova). <strong>Atribuições do Cargo de Auditor:</strong> realizar auditorias internas e externas, avaliar controles internos, verificar cumprimento de normas, analisar documentos contábeis/fiscais, emitir relatórios com recomendações, identificar e corrigir irregularidades, colaborar em prestação de contas, manter sigilo, atuar em conformidade com normas éticas.', alerta: 'O edital cita Lei 8.666/93 E 14.133/21 — saiba que a nova lei revogou gradualmente a antiga. Principais diferenças: nova cria o diálogo competitivo, amplia o pregão, muda fases. Atribuições do cargo: questão direta sobre o que faz um auditor.', tempo: '3 dias', meta: '30 questões' },
+    ]
+  },
+};
+
+// PROFUNDIDADE
+const PROF = {
+  port:   { denso: [3,4,5,6,7,8], medio: [0,1,2,9], amplo: [] },
+  info:   { denso: [2,3], medio: [0,1,4], amplo: [] },
+  gerais: { denso: [], medio: [0,1,2], amplo: [] },
+  const:  { denso: [1,3], medio: [0,2], amplo: [] },
+  trib:   { denso: [2,3,4], medio: [0,1], amplo: [] },
+  adm:    { denso: [0,1,3,4], medio: [2], amplo: [] },
+  cont:   { denso: [0,1,2,3,4,5,6], medio: [], amplo: [] },
+  audit:  { denso: [0,1,2,3], medio: [], amplo: [] },
+  ci:     { denso: [0,1,3], medio: [2], amplo: [] },
+};
+const PROF_LABEL = {
+  denso: { tag: '🔴 denso',  desc: '30+ questões + teoria + ficha + revisão' },
+  medio: { tag: '🟡 médio',  desc: '15 questões + resumo + ficha rápida' },
+  amplo: { tag: '🟢 amplo',  desc: '10 questões + lei seca + flashcard' },
+};
+function getProf(matId, idx) {
+  const m = PROF[matId];
+  if(!m) return 'medio';
+  if(m.denso && m.denso.includes(idx)) return 'denso';
+  if(m.amplo && m.amplo.includes(idx)) return 'amplo';
+  if(m.medio && m.medio.includes(idx)) return 'medio';
+  return 'medio';
+}
+
+const MAT_COR = {
+  port:'var(--m-port)', info:'var(--m-info)', gerais:'var(--m-gerais)',
+  const:'var(--m-const)', trib:'var(--m-trib)', adm:'var(--m-adm)',
+  cont:'var(--m-cont)', audit:'var(--m-audit)', ci:'var(--m-ci)'
+};
+const MAT_NOME = {
+  port:'Português', info:'Informática', gerais:'Conhec. Gerais',
+  const:'Dir. Constitucional', trib:'Dir. Tributário', adm:'Dir. Administrativo',
+  cont:'Contabilidade Pública', audit:'Auditoria', ci:'Controle Interno'
+};
+
+// PLANO SEMANAL — 13h-18h
+const PLANO_SEMANA = {
+  0: { // Domingo
+    nome: 'Domingo',
+    apelido: 'Revisão estratégica + descanso noite',
+    blocos: [
+      { mat:'port',  tag:'b-port',  hor:'📋 Bloco 1 · 13h', tempo:'1h', isRevisao:true },
+      { mat:'cont',  tag:'b-cont',  hor:'📋 Bloco 2 · 14h15', tempo:'1h', isRevisao:true },
+      { mat:'audit', tag:'b-audit', hor:'📋 Bloco 3 · 15h30', tempo:'1h', isRevisao:true },
+    ]
+  },
+  1: { // Segunda
+    nome: 'Segunda-feira',
+    apelido: 'Contabilidade Pública + Dir. Constitucional',
+    blocos: [
+      { mat:'cont',  tag:'b-cont',  hor:'📚 Bloco 1 · 13h–14h30', tempo:'1h30' },
+      { mat:'const', tag:'b-const', hor:'📚 Bloco 2 · 14h45–16h15', tempo:'1h30' },
+      { mat:'port',  tag:'b-port',  hor:'📖 Bloco 3 · 16h30–17h15', tempo:'45 min' },
+      { mat:'info',  tag:'b-info',  hor:'💻 Bloco 4 · 17h15–18h', tempo:'45 min' },
+    ]
+  },
+  2: { // Terça
+    nome: 'Terça-feira',
+    apelido: 'Auditoria + Dir. Tributário',
+    blocos: [
+      { mat:'audit', tag:'b-audit', hor:'📚 Bloco 1 · 13h–14h30', tempo:'1h30' },
+      { mat:'trib',  tag:'b-trib',  hor:'📚 Bloco 2 · 14h45–16h15', tempo:'1h30' },
+      { mat:'port',  tag:'b-port',  hor:'📖 Bloco 3 · 16h30–17h15', tempo:'45 min' },
+      { mat:'info',  tag:'b-info',  hor:'💻 Bloco 4 · 17h15–18h', tempo:'45 min' },
+    ]
+  },
+  3: { // Quarta
+    nome: 'Quarta-feira',
+    apelido: 'Controle Interno + Dir. Administrativo',
+    blocos: [
+      { mat:'ci',  tag:'b-ci',  hor:'📚 Bloco 1 · 13h–14h30', tempo:'1h30' },
+      { mat:'adm', tag:'b-adm', hor:'📚 Bloco 2 · 14h45–16h15', tempo:'1h30' },
+      { mat:'port', tag:'b-port', hor:'📖 Bloco 3 · 16h30–17h15', tempo:'45 min' },
+      { mat:'info', tag:'b-info', hor:'💻 Bloco 4 · 17h15–18h', tempo:'45 min' },
+    ]
+  },
+  4: { // Quinta
+    nome: 'Quinta-feira',
+    apelido: 'Contabilidade Pública + Controle Interno',
+    blocos: [
+      { mat:'cont', tag:'b-cont', hor:'📚 Bloco 1 · 13h–14h30', tempo:'1h30' },
+      { mat:'ci',   tag:'b-ci',   hor:'📚 Bloco 2 · 14h45–16h15', tempo:'1h30' },
+      { mat:'port', tag:'b-port', hor:'📖 Bloco 3 · 16h30–17h15', tempo:'45 min' },
+      { mat:'info', tag:'b-info', hor:'💻 Bloco 4 · 17h15–18h', tempo:'45 min' },
+    ]
+  },
+  5: { // Sexta
+    nome: 'Sexta-feira',
+    apelido: 'Auditoria + Dir. Tributário + Gerais',
+    blocos: [
+      { mat:'audit',  tag:'b-audit',  hor:'📚 Bloco 1 · 13h–14h30', tempo:'1h30' },
+      { mat:'trib',   tag:'b-trib',   hor:'📚 Bloco 2 · 14h45–16h15', tempo:'1h30' },
+      { mat:'gerais', tag:'b-gerais', hor:'🌍 Bloco 3 · 16h30–17h15', tempo:'45 min' },
+      { mat:'port',   tag:'b-port',   hor:'📖 Bloco 4 · 17h15–18h', tempo:'45 min' },
+    ]
+  },
+  6: { // Sábado
+    nome: 'Sábado',
+    apelido: 'Simulado completo + Correção',
+    blocos: [
+      { mat:'port',  tag:'b-port', hor:'📊 Bloco 1 · 13h (Simulado 50q)', tempo:'2h30', isSimulado:true },
+      { mat:'port',  tag:'b-port', hor:'🔍 Bloco 2 · 15h45 (Correção)', tempo:'1h15', isCorrecao:true },
+      { mat:'cont',  tag:'b-cont', hor:'📖 Bloco 3 · 17h (Revisão ficha)', tempo:'1h' },
+    ]
+  }
+};
+
+const FRASES = [
+  "Uma questão de cada vez. E essa questão vale a vaga.",
+  "Estuda Sá — porque o edital não tem dia ruim.",
+  "Auditoria é método. Seu estudo também.",
+  "Enquanto alguém lê o resumo, você resolve a questão.",
+  "A vaga é 1. Você é a 1 certa.",
+  "Errou? Ótimo — acabou de aprender.",
+  "Método reverso: questão primeiro, teoria depois, domínio sempre.",
+  "Triunfo é cidade pequena. Você não se perde nela.",
+  "Contabilidade hoje, cargo amanhã.",
+  "O controle interno começa na sua mesa de estudo.",
+  "Cada bloco é um passo. Cada passo é irreversível.",
+  "Confiar no processo é parte do processo.",
+  "5 horas por dia. 83 dias. Uma vaga.",
+];
+
+// ESTADO
+let logs = JSON.parse(localStorage.getItem('logs_audit_triunfo') || '[]');
+let blocosFeitos = JSON.parse(localStorage.getItem('bf_audit_triunfo') || '{}');
+let trilhas = JSON.parse(localStorage.getItem('tr_audit_triunfo') || '{}');
+let timer = JSON.parse(localStorage.getItem('timer_audit_triunfo') || 'null');
+let timerInterval = null;
+let modalStarVal = 4;
+
+function save() {
+  localStorage.setItem('logs_audit_triunfo', JSON.stringify(logs));
+  localStorage.setItem('bf_audit_triunfo', JSON.stringify(blocosFeitos));
+  localStorage.setItem('tr_audit_triunfo', JSON.stringify(trilhas));
+}
+function saveTimer() { localStorage.setItem('timer_audit_triunfo', JSON.stringify(timer)); }
+
+// BACKUP
+function gerarBackupObj() {
+  return { versao:'auditor-triunfo-1', data: new Date().toISOString(), logs, blocosFeitos, trilhas };
+}
+function exportarBackup() {
+  const txt = JSON.stringify(gerarBackupObj(), null, 2);
+  const blob = new Blob([txt], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `backup-auditor-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  msgBackup('✅ Backup baixado!', 'var(--sage)');
+}
+function aplicarBackup(obj) {
+  if(!obj || (!obj.logs && !obj.trilhas)) { msgBackup('❌ Arquivo inválido.','var(--terra)'); return; }
+  if(obj.logs) logs = obj.logs;
+  if(obj.blocosFeitos) blocosFeitos = obj.blocosFeitos;
+  if(obj.trilhas) trilhas = obj.trilhas;
+  save();
+  renderHoje(); renderTrilhas(); renderProgress(); renderLogs(); renderSemana();
+  msgBackup('✅ Progresso restaurado!', 'var(--sage)');
+}
+function importarBackup(ev) {
+  const f = ev.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => { try { aplicarBackup(JSON.parse(e.target.result)); } catch { msgBackup('❌ Arquivo inválido.','var(--terra)'); } };
+  r.readAsText(f); ev.target.value='';
+}
+function copiarBackupTexto() {
+  const ta = document.getElementById('backupText');
+  ta.value = JSON.stringify(gerarBackupObj());
+  msgBackup('✅ Texto gerado. Copie e guarde.', 'var(--sage)');
+}
+function restaurarDoTexto() {
+  const ta = document.getElementById('backupText');
+  if(!ta || !ta.value.trim()) { msgBackup('❌ Cole o texto primeiro.','var(--terra)'); return; }
+  try { aplicarBackup(JSON.parse(ta.value.trim())); } catch { msgBackup('❌ Texto inválido.','var(--terra)'); }
+}
+function msgBackup(t,c) { const el=document.getElementById('backupMsg'); if(el){el.textContent=t;el.style.color=c;} }
+
+// TIMER
+function startTimer(matId, blocoIdx) {
+  if(timer && !timer.paused) {
+    if(!confirm(`Cronômetro rodando em ${MAT_NOME[timer.matId]}. Parar e iniciar em ${MAT_NOME[matId]}?`)) return;
+    timer = null; if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
+  }
+  timer = { matId, blocoIdx, startMs: Date.now(), elapsedMs: 0, paused: false };
+  saveTimer(); renderTimerUI(); renderHoje(); startTimerInterval();
+}
+function pauseTimer() {
+  if(!timer) return;
+  if(timer.paused) { timer.startMs = Date.now(); timer.paused = false; startTimerInterval(); }
+  else { timer.elapsedMs += Date.now()-timer.startMs; timer.paused = true; if(timerInterval){clearInterval(timerInterval);timerInterval=null;} }
+  saveTimer(); renderTimerUI();
+}
+function stopTimer() {
+  if(!timer) return;
+  let ms = timer.elapsedMs + (timer.paused ? 0 : Date.now()-timer.startMs);
+  document.getElementById('modalMatNome').textContent = MAT_NOME[timer.matId]||timer.matId;
+  document.getElementById('modalTempoFinal').textContent = formatTempo(ms);
+  document.getElementById('modalNota').value = '';
+  modalStarVal = 4;
+  document.querySelectorAll('.modal-star').forEach(s => s.classList.toggle('active', parseInt(s.dataset.c) <= 4));
+  document.getElementById('modalFim').classList.add('active');
+}
+function setStar(v) {
+  modalStarVal = v;
+  document.querySelectorAll('.modal-star').forEach(s => s.classList.toggle('active', parseInt(s.dataset.c) <= v));
+}
+function cancelarFinal() { document.getElementById('modalFim').classList.remove('active'); }
+function confirmarFinal() {
+  if(!timer) return;
+  let ms = timer.elapsedMs + (timer.paused ? 0 : Date.now()-timer.startMs);
+  const horas = +(ms/3600000).toFixed(2);
+  logs.unshift({ id:Date.now(), matId:timer.matId, matNome:MAT_NOME[timer.matId]||timer.matId, horas, conf:modalStarVal,
+    nota:document.getElementById('modalNota').value.trim(), data:new Date().toISOString(), viaTimer:true });
+  timer = null; if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  saveTimer(); save();
+  document.getElementById('modalFim').classList.remove('active');
+  renderTimerUI(); renderHoje(); renderLogs(); renderProgress();
+  toast(`✓ Sessão de ${formatTempo(ms)} registrada em ${MAT_NOME[logs[0].matId]}`);
+}
+function startTimerInterval() {
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => { if(!timer||timer.paused) return; updateTimerDisplay(); }, 1000);
+}
+function updateTimerDisplay() {
+  if(!timer) return;
+  let ms = timer.elapsedMs + (timer.paused ? 0 : Date.now()-timer.startMs);
+  const el = document.getElementById('timerFixedTime');
+  if(el) el.textContent = formatTempo(ms, true);
+}
+function renderTimerUI() {
+  const box = document.getElementById('timerFixed');
+  if(!timer) { box.classList.remove('active'); return; }
+  box.classList.add('active');
+  document.getElementById('timerFixedMat').textContent = MAT_NOME[timer.matId]||timer.matId;
+  document.getElementById('timerPauseBtn').textContent = timer.paused ? '▶ Retomar' : '⏸ Pausar';
+  updateTimerDisplay();
+}
+function formatTempo(ms, showSec) {
+  const s = Math.floor(ms/1000), h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sc = s%60;
+  if(showSec) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`;
+  if(h>0) return `${h}h ${m}min`; return `${m}min`;
+}
+function toast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:120px;right:20px;background:var(--sage);color:#fff;padding:12px 18px;border-radius:10px;font-size:0.88rem;font-weight:500;box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:300;max-width:300px;';
+  document.body.appendChild(t); setTimeout(()=>t.remove(), 3500);
+}
+
+// TRILHAS HELPERS
+function getEtapaAtual(matId) {
+  if(!TRILHAS[matId]) return null;
+  const idx = trilhas[matId] ?? 0;
+  const t = TRILHAS[matId];
+  if(idx >= t.etapas.length) return { trilha:t, etapa:t.etapas[t.etapas.length-1], idx:t.etapas.length-1, total:t.etapas.length, concluida:true };
+  return { trilha:t, etapa:t.etapas[idx], idx, total:t.etapas.length, concluida:false };
+}
+function avancarEtapa(matId) {
+  if(!TRILHAS[matId]) return;
+  const atual = trilhas[matId] ?? 0;
+  if(atual < TRILHAS[matId].etapas.length) { trilhas[matId] = atual+1; save(); renderHoje(); renderTrilhas(); }
+}
+function voltarEtapa(matId) {
+  const atual = trilhas[matId] ?? 0;
+  if(atual > 0) { trilhas[matId] = atual-1; save(); renderHoje(); renderTrilhas(); }
+}
+function irParaEtapa(matId, idx) { trilhas[matId] = idx; delete trilhas['open_'+matId+'_'+idx]; save(); renderHoje(); renderTrilhas(); }
+function toggleExpand(matId, idx) { trilhas['open_'+matId+'_'+idx] = !trilhas['open_'+matId+'_'+idx]; save(); renderTrilhas(); }
+
+// HOJE
+function getSaudacao() {
+  const h = new Date().getHours();
+  if(h<12) return 'Bom dia'; if(h<18) return 'Boa tarde'; return 'Boa noite';
+}
+function renderHoje() {
+  const hoje = new Date();
+  const dow = hoje.getDay();
+  const isoHoje = hoje.toISOString().slice(0,10);
+  const plano = PLANO_SEMANA[dow];
+  const frase = FRASES[hoje.getDate() % FRASES.length];
+
+  document.getElementById('hojeData').textContent =
+    hoje.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'}).replace(/^./,c=>c.toUpperCase());
+  document.getElementById('hojeTitulo').innerHTML = `${getSaudacao()}, <span>${plano.apelido}</span>`;
+
+  let totalMin = 0;
+  plano.blocos.forEach(b => {
+    const m = b.tempo.match(/(\d+)h(\d+)?/); const m2 = b.tempo.match(/^(\d+) min/);
+    if(m) totalMin += parseInt(m[1])*60 + (parseInt(m[2])||0);
+    else if(m2) totalMin += parseInt(m2[1]);
+  });
+  const totalH = (totalMin/60).toFixed(1);
+
+  document.getElementById('hojeResumo').innerHTML =
+    `<strong>${plano.blocos.length} blocos · ${totalH}h planejadas hoje.</strong> Use o método reverso em todos os blocos específicos: questões primeiro, teoria após o erro. <br><em style="color:var(--navy)">"${frase}"</em>`;
+
+  const feitosHoje = blocosFeitos[isoHoje] || [];
+  const horasHoje = logs.filter(l=>l.data.startsWith(isoHoje)).reduce((s,l)=>s+l.horas,0);
+  document.getElementById('hojeStats').innerHTML = `
+    <div class="h-stat"><div class="h-stat-val">${totalH}h</div><div class="h-stat-lbl">Previsto hoje</div></div>
+    <div class="h-stat"><div class="h-stat-val" style="color:var(--sage)">${horasHoje.toFixed(1)}h</div><div class="h-stat-lbl">Já estudado</div></div>
+    <div class="h-stat"><div class="h-stat-val" style="color:var(--terra)">${feitosHoje.length}/${plano.blocos.length}</div><div class="h-stat-lbl">Blocos feitos</div></div>
+    <div class="h-stat"><div class="h-stat-val" style="color:var(--gold)">${getDiasUnicos()}</div><div class="h-stat-lbl">Dias acumulados</div></div>`;
+  document.getElementById('hojeBlocoCount').textContent = `${plano.blocos.length} blocos · ${totalH}h`;
+
+  const listEl = document.getElementById('blocoList');
+  const partes = [];
+  plano.blocos.forEach((b,i) => {
+    const feito = feitosHoje.includes(i);
+    const info = getEtapaAtual(b.mat);
+    let conteudo = '';
+
+    if(b.isRevisao) {
+      conteudo = `<div class="bloco-pill">🔁 Revisão</div><div class="bloco-titulo">Revisão estratégica · ${MAT_NOME[b.mat]}</div><div class="bloco-detalhe">Releia fichas da semana + 10 questões dos pontos com mais erros. Domingo é para consolidar, não avançar.</div>`;
+    } else if(b.isSimulado) {
+      conteudo = `<div class="bloco-pill">📊 Simulado</div><div class="bloco-titulo">Simulado completo · 50 questões · 4h cronometradas</div><div class="bloco-detalhe">Distribuição real: 10 Português + 5 Informática + 10 Gerais + 20 Específicos. Sem consulta. Cronometrado.</div>`;
+    } else if(b.isCorrecao) {
+      conteudo = `<div class="bloco-pill">🔍 Correção</div><div class="bloco-titulo">Análise dos erros do simulado</div><div class="bloco-detalhe">Classifique cada erro: <strong>nunca vi / vi mas esqueci / armadilha de banca</strong>. Anote no diário os temas críticos para focar na semana seguinte.</div>`;
+    } else if(info) {
+      const alertaHTML = info.etapa.alerta ? `<div class="etapa-alerta"><strong>⚠️ Atenção:</strong> ${info.etapa.alerta}</div>` : '';
+      conteudo = `<div class="bloco-pill">Etapa ${info.idx+1} de ${info.total}</div>
+        <div class="bloco-titulo">${info.etapa.titulo}</div>
+        <div class="bloco-detalhe">${info.etapa.desc}</div>
+        ${alertaHTML}
+        <div class="bloco-meta"><span>⏱ <strong>${info.etapa.tempo}</strong></span><span>🎯 <strong>${info.etapa.meta}</strong></span></div>`;
+    } else {
+      conteudo = `<div class="bloco-titulo">${MAT_NOME[b.mat]||b.mat}</div>`;
+    }
+
+    const timerRodando = timer && timer.matId === b.mat && timer.blocoIdx === i;
+    let botoes = timerRodando
+      ? `<button class="btn btn-timer running" onclick="stopTimer()">⏱ Em andamento · finalizar</button>`
+      : `<button class="btn btn-timer" onclick="startTimer('${b.mat}',${i})">▶ Iniciar cronômetro</button>`;
+    botoes += `<button class="btn ${feito?'btn-done':''}" onclick="toggleBloco(${i})">${feito?'✓ Bloco feito':'Marcar feito'}</button>`;
+    if(info && !info.concluida && !b.isSimulado && !b.isCorrecao) {
+      botoes += `<button class="btn btn-step" onclick="event.stopPropagation();avancarEtapa('${b.mat}')">✓ Etapa concluída</button>`;
+    }
+    if(info && info.idx > 0) botoes += `<button class="btn" onclick="event.stopPropagation();voltarEtapa('${b.mat}')">← voltar</button>`;
+    botoes += `<button class="btn" onclick="abrirDiario('${b.mat}')">📝 Diário</button>`;
+
+    partes.push(`<div class="bloco-card ${b.tag} ${feito?'feito':''}">
+      <div class="bloco-num">${i+1}</div>
+      <div class="bloco-info">
+        <div class="bloco-horario">${b.hor} · ${MAT_NOME[b.mat]||b.mat}</div>
+        ${conteudo}
+        <div class="bloco-actions">${botoes}</div>
+      </div>
+      <div class="bloco-tempo">${b.tempo}<small>tempo</small></div>
+    </div>`);
+  });
+  listEl.innerHTML = partes.join('');
+}
+function toggleBloco(i) {
+  const iso = new Date().toISOString().slice(0,10);
+  if(!blocosFeitos[iso]) blocosFeitos[iso] = [];
+  const idx = blocosFeitos[iso].indexOf(i);
+  if(idx>=0) blocosFeitos[iso].splice(idx,1); else blocosFeitos[iso].push(i);
+  save(); renderHoje();
+}
+function abrirDiario(matId) {
+  goTab('diario');
+  setTimeout(()=>{ const s=document.getElementById('selMat'); if(s&&[...s.options].some(o=>o.value===matId)) s.value=matId; },100);
+}
+
+// SEMANA
+function renderSemana() {
+  const hojeDow = new Date().getDay();
+  const el = document.getElementById('semanaTimeline'); if(!el) return;
+  const ordem = [1,2,3,4,5,6,0];
+  el.innerHTML = ordem.map(dow => {
+    const p = PLANO_SEMANA[dow];
+    const isH = dow === hojeDow;
+    let totalMin = 0;
+    p.blocos.forEach(b => {
+      const m=b.tempo.match(/(\d+)h(\d+)?/), m2=b.tempo.match(/^(\d+) min/);
+      if(m) totalMin+=parseInt(m[1])*60+(parseInt(m[2])||0); else if(m2) totalMin+=parseInt(m2[1]);
+    });
+    const totalH = (totalMin/60).toFixed(1);
+    const renderBloco = b => {
+      const nome = b.isSimulado?'📊 Simulado':b.isCorrecao?'🔍 Correção':b.isRevisao?'🔁 Revisão':(MAT_NOME[b.mat]||b.mat);
+      return `<div class="dia-bloco">
+        <div class="dia-bloco-dot" style="background:${MAT_COR[b.mat]||'var(--muted)'}"></div>
+        <div class="dia-bloco-mat">${nome}</div>
+        <div class="dia-bloco-h">${b.tempo}</div>
+      </div>`;
+    };
+    return `<div class="dia-row ${isH?'hoje-row':''}">
+      <div class="dia-head">
+        <div class="dia-titulo">${p.nome}${isH?' <span style="color:var(--navy);font-size:0.85rem;font-weight:600">· hoje</span>':''} <span class="dia-ap">· ${p.apelido}</span></div>
+        <div class="dia-total">${totalH}h · ${p.blocos.length} blocos</div>
+      </div>
+      <div class="dia-blocos">${p.blocos.map(renderBloco).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// TRILHAS
+function renderTrilhas() {
+  const chipsEl = document.getElementById('trilhasChips');
+  if(chipsEl) {
+    chipsEl.innerHTML = Object.entries(TRILHAS).map(([id,t]) =>
+      `<button class="trilha-chip" style="--cor:${t.cor}" onclick="document.getElementById('trilha-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${t.nome}</button>`
+    ).join('');
+  }
+  const c = document.getElementById('trilhasContent'); if(!c) return;
+  c.innerHTML = Object.entries(TRILHAS).map(([id,trilha]) => {
+    const atual = trilhas[id]??0, total=trilha.etapas.length, conc=Math.min(atual,total);
+    const pct = Math.round(conc/total*100);
+    const atualTitulo = trilha.etapas[Math.min(atual,total-1)].titulo;
+    let nD=0,nM=0,nA=0;
+    trilha.etapas.forEach((_,i)=>{ const p=getProf(id,i); if(p==='denso')nD++; else if(p==='amplo')nA++; else nM++; });
+    return `<div class="trilha-card" id="trilha-${id}">
+      <div class="trilha-head">
+        <div>
+          <div class="trilha-nome" style="color:${trilha.cor}">${trilha.nome}</div>
+          <div class="trilha-sub">${trilha.info}</div>
+          <div class="trilha-sub" style="margin-top:6px">Etapa atual: <strong>${atualTitulo}</strong></div>
+          <div class="trilha-sub" style="margin-top:4px;display:flex;gap:10px;flex-wrap:wrap">
+            <span class="prof-selo prof-denso">🔴 ${nD}</span>
+            <span class="prof-selo prof-medio">🟡 ${nM}</span>
+            ${nA?`<span class="prof-selo prof-amplo">🟢 ${nA}</span>`:''}
+          </div>
+        </div>
+        <div class="trilha-stat">${conc}/${total}<small>${pct}% concluído</small></div>
+      </div>
+      <div class="trilha-bar"><div class="trilha-fill" style="width:${pct}%;background:${trilha.cor}"></div></div>
+      <div class="etapas">
+        ${trilha.etapas.map((e,i)=>{
+          const feita=i<atual, ehAtual=i===atual, open=trilhas['open_'+id+'_'+i];
+          const prof=getProf(id,i);
+          const profHTML=prof?`<span class="prof-selo prof-${prof}">${PROF_LABEL[prof].tag}</span>`:'';
+          const alertaHTML=e.alerta?`<div class="etapa-alerta"><strong>⚠️ Atenção:</strong> ${e.alerta}</div>`:'';
+          const estratHTML=prof?`<div class="etapa-alerta" style="background:rgba(106,132,90,0.08);border-color:rgba(106,132,90,0.3);color:var(--ink-soft);margin-top:6px"><strong>${PROF_LABEL[prof].tag} · estratégia:</strong> ${PROF_LABEL[prof].desc}</div>`:'';
+          return `<div class="etapa-wrap">
+            <div class="etapa ${feita?'feita':ehAtual?'atual':''} ${open?'open':''}" onclick="toggleExpand('${id}',${i})">
+              <div class="etapa-dot">${feita?'✓':i+1}</div>
+              <div class="etapa-titulo-wrap">
+                <div class="etapa-titulo">${e.titulo} ${profHTML}</div>
+                ${ehAtual?'<div class="etapa-badge">↑ você está aqui</div>':''}
+              </div>
+              <div class="etapa-tempo">${e.tempo}</div>
+              <div class="etapa-arrow">${open?'▲':'▼'}</div>
+            </div>
+            ${open?`<div class="etapa-detail">
+              <div class="etapa-desc">${e.desc}</div>
+              ${alertaHTML}${estratHTML}
+              <div class="etapa-meta"><span>⏱ <strong>${e.tempo}</strong></span><span>🎯 <strong>${e.meta}</strong></span></div>
+              <div class="etapa-actions">
+                ${ehAtual?(timer&&timer.matId===id
+                  ?`<button class="btn btn-timer running" onclick="event.stopPropagation();stopTimer()">⏱ Em andamento · finalizar</button>`
+                  :`<button class="btn btn-timer" onclick="event.stopPropagation();startTimer('${id}',-1)">▶ Estudar agora</button>`):''}
+                ${!ehAtual&&!feita?`<button class="btn btn-step" onclick="event.stopPropagation();irParaEtapa('${id}',${i})">Ir para esta etapa</button>`:''}
+                ${ehAtual?`<button class="btn btn-step" onclick="event.stopPropagation();avancarEtapa('${id}')">✓ Concluí esta etapa</button>`:''}
+                ${feita?`<button class="btn" onclick="event.stopPropagation();irParaEtapa('${id}',${i})">↺ Reabrir (revisão)</button>`:''}
+              </div>
+            </div>`:''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// DIÁRIO
+function renderLogSelect() {
+  const s = document.getElementById('selMat'); if(!s) return;
+  s.innerHTML = Object.keys(MAT_NOME).map(id=>`<option value="${id}">${MAT_NOME[id]}</option>`).join('');
+}
+function addLog() {
+  const matId = document.getElementById('selMat').value;
+  const horas = parseFloat(document.getElementById('fHoras').value)||1.5;
+  const conf = parseInt(document.getElementById('fConf').value)||3;
+  const nota = document.getElementById('fNota').value.trim();
+  logs.unshift({ id:Date.now(), matId, matNome:MAT_NOME[matId], horas, conf, nota, data:new Date().toISOString() });
+  save(); document.getElementById('fNota').value='';
+  renderLogs(); renderHoje(); renderProgress();
+}
+function renderLogs() {
+  const list = document.getElementById('logList'); if(!list) return;
+  if(!logs.length) { list.innerHTML='<div class="empty">Nenhuma sessão ainda. Começa hoje!</div>'; return; }
+  list.innerHTML = logs.slice(0,60).map(l=>`
+    <div class="log-item" style="border-left-color:${MAT_COR[l.matId]||'var(--navy)'}">
+      <div>
+        <div class="log-mat">${l.matNome}</div>
+        <div class="log-meta">${new Date(l.data).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})} · ${l.horas}h · ${'⭐'.repeat(l.conf)}</div>
+        ${l.nota?`<div class="log-nota">${l.nota}</div>`:''}
+      </div>
+      <span class="log-del" onclick="delLog(${l.id})">✕</span>
+    </div>`).join('');
+}
+function delLog(id) { logs=logs.filter(l=>l.id!==id); save(); renderLogs(); renderHoje(); renderProgress(); }
+
+// PROGRESSO
+function getHoras(matId) { return logs.filter(l=>l.matId===matId).reduce((s,l)=>s+l.horas,0); }
+function totalHoras() { return logs.reduce((s,l)=>s+l.horas,0); }
+function getDiasUnicos() { return new Set(logs.map(l=>l.data.slice(0,10))).size; }
+
+const METAS = {
+  port:50, info:20, gerais:15,
+  const:45, trib:40, adm:50,
+  cont:70, audit:50, ci:40
+};
+
+function renderProgress() {
+  const s = document.getElementById('statsProgress');
+  if(s) {
+    const t = totalHoras();
+    const metaTotal = Object.values(METAS).reduce((a,b)=>a+b,0);
+    s.innerHTML = `
+      <div class="stat-card"><div class="stat-val" style="color:var(--sage)">${getDiasUnicos()}</div><div class="stat-lbl">Dias estudados</div></div>
+      <div class="stat-card"><div class="stat-val">${t.toFixed(1)}h</div><div class="stat-lbl">Horas totais</div></div>
+      <div class="stat-card"><div class="stat-val">${logs.length}</div><div class="stat-lbl">Sessões</div></div>
+      <div class="stat-card"><div class="stat-val" style="color:var(--gold)">${Math.min(100,Math.round(t/metaTotal*100))}%</div><div class="stat-lbl">Progresso geral</div></div>`;
+  }
+  const g = document.getElementById('progGrid'); if(!g) return;
+  g.innerHTML = Object.keys(MAT_NOME).map(id=>{
+    const h=getHoras(id), meta=METAS[id]||30, pct=Math.min(100,Math.round(h/meta*100));
+    return `<div class="prog-card">
+      <h4 style="color:${MAT_COR[id]||'var(--ink)'}">${MAT_NOME[id]}</h4>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${MAT_COR[id]||'var(--ink)'}"></div></div>
+      <div class="prog-pct"><span>${h.toFixed(1)}h / ${meta}h</span><span>${pct}%</span></div>
+    </div>`;
+  }).join('');
+}
+
+// COUNTDOWNS
+function updateCountdowns() {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const prova = new Date(2026,7,30);
+  const insc = new Date(2026,5,30);
+  const gabarito = new Date(2026,7,1);
+  const dP = Math.ceil((prova-hoje)/86400000);
+  const dI = Math.ceil((insc-hoje)/86400000);
+  const dG = Math.ceil((gabarito-hoje)/86400000);
+  document.getElementById('cdProva').textContent = dP>0?`${dP} dias`:(dP===0?'HOJE!':'—');
+  document.getElementById('cdInsc').textContent = dI>0?`${dI} dias`:'— encerradas';
+  document.getElementById('cdGabarito').textContent = dG>0?`${dG} dias`:'— publicado';
+  const d = new Date();
+  document.getElementById('dateBadge').textContent =
+    d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'}).replace(/^./,c=>c.toUpperCase());
+}
+
+// TABS
+function goTab(name) {
+  const order = ['hoje','semana','trilhas','edital','estrategia','rotina','diario','progresso'];
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('.tab')[order.indexOf(name)].classList.add('active');
+  if(name==='hoje') renderHoje();
+  if(name==='semana') renderSemana();
+  if(name==='trilhas') renderTrilhas();
+  if(name==='progresso') renderProgress();
+}
+
+// INIT
+function init() {
+  updateCountdowns();
+  renderLogSelect();
+  renderLogs();
+  renderHoje();
+  renderSemana();
+  renderTrilhas();
+  renderProgress();
+  if(timer) { renderTimerUI(); if(!timer.paused) startTimerInterval(); }
+}
+init();
+</script>
+</body>
+</html>
