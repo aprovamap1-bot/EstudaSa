@@ -750,7 +750,15 @@ body {
     <div class="stitle-sub" id="hojeBlocoCount">— blocos</div>
   </div>
 
-  <div id="blocoList" class="bloco-list"></div>
+  <div id="diaAnteriorSection" style="margin-bottom:24px;display:none">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+    <div style="width:3px;height:20px;background:var(--terra);border-radius:2px"></div>
+    <span style="font-family:var(--font-head);font-size:1rem;font-weight:500;color:var(--terra)">📅 Conteúdo de ontem (não estudado)</span>
+    <button onclick="document.getElementById('diaAnteriorSection').style.display='none'" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:var(--r);padding:4px 10px;font-size:0.75rem;color:var(--muted);cursor:pointer">Ocultar</button>
+  </div>
+  <div id="diaAnteriorList"></div>
+</div>
+<div id="blocoList" class="bloco-list"></div>
 
   <div class="alert" style="margin-top:24px">
     <strong>💡 Método reverso aplicado ao Auditor:</strong> em cada bloco, <strong>comece com 5–10 questões</strong> do tema (Educa/bancas similares), depois leia a teoria do que errou. Contabilidade Pública e Auditoria exigem muita questão prática — não apenas leitura de lei. Marque "Etapa concluída" quando conseguir acertar sistematicamente, não pela passagem do tempo.
@@ -1234,7 +1242,7 @@ const TRILHAS = {
     cor: 'var(--m-info)',
     info: '5q · Peso 2 · 10 pts · NÃO ZERAR · todo dia',
     etapas: [
-      { titulo: 'Hardware e Software · fundamentos', desc: '<strong>Edital cita literalmente.</strong> Componentes internos: CPU, RAM, ROM, cache, HD, SSD, placa-mãe, fonte. Periféricos: entrada (teclado, mouse, scanner), saída (monitor, impressora), E/S (pendrives, HDs externos). Tipos de software: sistemas operacionais, aplicativos, utilitários, drivers. Windows vs Linux vs macOS.', alerta: 'Conceitos básicos mas cobrados. Não confundir RAM (volátil) com HD/SSD (não volátil).', tempo: '2 dias', meta: '15 questões' },
+      { titulo: 'Hardware e Software · fundamentos', desc: '<strong>Edital cita literalmente.</strong> Componentes internos: CPU, RAM, ROM, cache, HD, SSD, placa-mãe, fonte. Periféricos: entrada (teclado, mouse, scanner), saída (monitor, impressora), E/S (pendrives, HDs externos). Tipos de software: sistemas operacionais, aplicativos, utilitários, drivers. Windows vs Linux vs macOS.', alerta: 'Conceitos básicos, mas cobrados. Não confundir RAM (volátil) com HD/SSD (não volátil).', tempo: '2 dias', meta: '15 questões' },
       { titulo: 'Redes de computadores', desc: '<strong>Edital cita literalmente.</strong> Topologias (estrela, barramento, anel, malha). Ethernet vs Wi-Fi. TCP/IP: modelo OSI vs TCP/IP, endereçamento IP, máscara de sub-rede. Protocolos: HTTP/HTTPS, FTP, SMTP, POP3/IMAP. Firewall e antivírus. VPN.', alerta: 'CC vs CCO no e-mail é um dos tópicos mais cobrados. HTTP vs HTTPS (segurança do cadeado).', tempo: '2 dias', meta: '20 questões' },
       { titulo: 'MS Word · Excel · PowerPoint', desc: '<strong>Edital cita literalmente cada um.</strong> Word: formatação, cabeçalho/rodapé, numeração, mala direta, sumário automático, revisão ortográfica. Excel: SOMA, MÉDIA, SE, PROCV/PROCH, CONT.SE, SOMASE, tabelas dinâmicas, formatação condicional, gráficos. PowerPoint: slides, animações, transições, modo apresentação.', alerta: 'PROCV e SE são as funções mais cobradas do Excel em concursos. Word: mala direta e controle de alterações.', tempo: '3 dias', meta: '30 questões' },
       { titulo: 'Internet · e-mail · segurança digital · avaliação de confiabilidade', desc: '<strong>Edital cita literalmente.</strong> Navegadores (abas, favoritos, cookies, modo anônimo, certificados de segurança, controle de pop-ups). Motores de busca (operadores booleanos AND/OR/NOT, filtros de pesquisa por data/idioma/tipo de arquivo). <strong>Avaliação de confiabilidade de sites e informações na internet.</strong> E-mail: CC vs CCO, phishing, assinatura institucional, respostas automáticas, criptografia para e-mails sensíveis. Segurança: malware, vírus, worms, trojans, ransomware, 2FA, senhas seguras, backups, atualizações. Criptografia (simétrica vs assimétrica). VPN, Tor, navegação anônima. Proteção de dados em redes sociais.', alerta: 'Phishing e engenharia social são os temas de segurança mais cobrados. CC deixa endereços visíveis, CCO não. Avaliação de confiabilidade: HTTPS, certificado SSL, domínio reconhecido.', tempo: '2 dias', meta: '20 questões' },
@@ -1612,6 +1620,32 @@ function getSaudacao() {
 function renderHoje() {
   const hoje = new Date();
   const dow = hoje.getDay();
+
+  // Mostrar conteúdo do dia anterior se não foi estudado
+  const ontem = new Date(hoje); ontem.setDate(hoje.getDate()-1);
+  const dowOntem = ontem.getDay();
+  const isoOntem = ontem.toISOString().slice(0,10);
+  const planoOntem = PLANO_SEMANA[dowOntem];
+  const feitosOntem = blocosFeitos[isoOntem] || [];
+  const secAnterior = document.getElementById('diaAnteriorSection');
+  const listAnterior = document.getElementById('diaAnteriorList');
+  if (planoOntem && feitosOntem.length < planoOntem.blocos.length && secAnterior) {
+    secAnterior.style.display = 'block';
+    const partesAnterior = [];
+    planoOntem.blocos.forEach((b,i) => {
+      const feito = feitosOntem.includes(i);
+      if(feito) return;
+      const info = getEtapaAtual(b.mat);
+      let titulo = info ? info.etapa.titulo : (MAT_NOME[b.mat]||b.mat);
+      partesAnterior.push(`<div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--terra);border-radius:var(--r);padding:12px 16px;margin-bottom:8px;opacity:.85">
+        <div style="font-size:0.75rem;color:var(--terra);font-weight:600;margin-bottom:4px">${b.hor} · ${MAT_NOME[b.mat]||b.mat}</div>
+        <div style="font-size:0.9rem;color:var(--ink);font-weight:500">${titulo}</div>
+      </div>`);
+    });
+    listAnterior.innerHTML = partesAnterior.join('') || '<p style="color:var(--muted);font-size:0.85rem">Todos os blocos foram concluídos.</p>';
+  } else if(secAnterior) {
+    secAnterior.style.display = 'none';
+  }
   const isoHoje = hoje.toISOString().slice(0,10);
   const plano = PLANO_SEMANA[dow];
   const frase = FRASES[hoje.getDate() % FRASES.length];
