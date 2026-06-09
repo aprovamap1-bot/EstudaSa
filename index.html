@@ -1090,17 +1090,15 @@ let supabaseClient = null;
 let USER_CODIGO = null;
 
 async function initSupabase() {
-  // Carrega o SDK do Supabase dinamicamente
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-    script.onload = () => {
-      supabaseClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      resolve(true);
-    };
-    script.onerror = () => resolve(false);
-    document.head.appendChild(script);
-  });
+  try {
+    // Usar import dinâmico de módulo ES — não conflita com extensões
+    const mod = await import('https://esm.sh/@supabase/supabase-js@2');
+    supabaseClient = mod.createClient(SUPA_URL, SUPA_KEY);
+    return true;
+  } catch(e) {
+    console.warn('Erro ao inicializar Supabase:', e);
+    return false;
+  }
 }
 
 function setSyncStatus(status, text) {
