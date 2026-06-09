@@ -597,9 +597,89 @@ body {
   .bloco-card { grid-template-columns: auto 1fr; }
   .bloco-tempo { display: none; }
 }
+
+/* LOGIN */
+.login-overlay {
+  position: fixed; inset: 0;
+  background: linear-gradient(135deg, #faf8f4 0%, #f0ebe0 100%);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; padding: 20px;
+}
+.login-overlay.hidden { display: none; }
+.login-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 40px 36px;
+  max-width: 420px; width: 100%;
+  box-shadow: 0 20px 60px rgba(42,37,32,0.10);
+  text-align: center;
+}
+.login-logo {
+  width: 64px; height: 64px; border-radius: 18px;
+  background: linear-gradient(135deg, var(--navy), var(--teal));
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-style: italic; font-weight: 500; font-size: 1.8rem;
+  margin: 0 auto 20px; box-shadow: var(--shadow);
+}
+.login-title {
+  font-family: var(--font-head); font-size: 1.8rem; font-weight: 500;
+  color: var(--ink); letter-spacing: -.02em; margin-bottom: 6px;
+}
+.login-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
+.login-input {
+  width: 100%; padding: 14px 16px; border: 1.5px solid var(--border);
+  border-radius: var(--r); font-family: var(--font-body); font-size: 1rem;
+  color: var(--ink); background: var(--bg); text-align: center;
+  letter-spacing: .1em; transition: border-color .2s;
+  margin-bottom: 14px; box-sizing: border-box;
+}
+.login-input:focus { outline: none; border-color: var(--navy); }
+.login-btn {
+  width: 100%; padding: 14px; border-radius: var(--r);
+  background: var(--navy); color: #fff; border: none;
+  font-family: var(--font-body); font-size: 1rem; font-weight: 600;
+  cursor: pointer; transition: background .2s; letter-spacing: .02em;
+}
+.login-btn:hover { background: #2e4a70; }
+.login-btn:disabled { background: var(--muted); cursor: not-allowed; }
+.login-error { color: var(--terra); font-size: 0.82rem; margin-top: 10px; min-height: 20px; }
+.login-version { font-size: 0.7rem; color: var(--faint); margin-top: 20px; }
+.sync-indicator {
+  position: fixed; bottom: 20px; left: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 0.72rem; color: var(--muted); font-weight: 500;
+  z-index: 90; display: flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow-sm); transition: all .3s;
+}
+.sync-indicator.syncing { border-color: var(--gold); color: var(--gold); }
+.sync-indicator.synced  { border-color: var(--sage); color: var(--sage); }
+.sync-indicator.error   { border-color: var(--terra); color: var(--terra); }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.sync-indicator.syncing .sync-dot { animation: pulse-sync 1s infinite; }
+@keyframes pulse-sync { 0%,100%{opacity:1} 50%{opacity:.3} }
 </style>
 </head>
 <body>
+
+<!-- TELA DE LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">A+</div>
+    <div class="login-title">Aprova Map+</div>
+    <div class="login-sub">Painel da <strong>Estuda Sá</strong><br>Auditor · Prefeitura de Triunfo/PB<br><span style="color:var(--navy);font-style:italic">Digite seu código de acesso</span></div>
+    <input class="login-input" type="password" id="loginInput" placeholder="••••••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')fazerLogin()">
+    <button class="login-btn" id="loginBtn" onclick="fazerLogin()">Entrar →</button>
+    <div class="login-error" id="loginError"></div>
+    <div class="login-version">Aprova Map+ · Auditor Triunfo 2026</div>
+  </div>
+</div>
+
+<!-- SYNC INDICATOR -->
+<div class="sync-indicator hidden" id="syncIndicator">
+  <div class="sync-dot"></div>
+  <span id="syncText">sincronizado</span>
+</div>
+
 
 <!-- HEADER -->
 <div class="hdr">
@@ -1001,6 +1081,129 @@ body {
 
 <script>
 // ═══════════════════════════════════════
+// SUPABASE CONFIG
+// ═══════════════════════════════════════
+const SUPA_URL = 'https://fllboowontrhssbgcfhb.supabase.co';
+const SUPA_KEY = 'sb_publishable_jRW4ZfywMn_DggaF7WSaFw_KBH8FC2M';
+
+let supabase = null;
+let USER_CODIGO = null;
+
+async function initSupabase() {
+  // Carrega o SDK do Supabase dinamicamente
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+    script.onload = () => {
+      supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+      resolve(true);
+    };
+    script.onerror = () => resolve(false);
+    document.head.appendChild(script);
+  });
+}
+
+function setSyncStatus(status, text) {
+  const el = document.getElementById('syncIndicator');
+  const tx = document.getElementById('syncText');
+  if (!el || !tx) return;
+  el.classList.remove('hidden', 'syncing', 'synced', 'error');
+  el.classList.add(status);
+  tx.textContent = text;
+}
+
+// LOGIN
+async function fazerLogin() {
+  const input = document.getElementById('loginInput');
+  const btn = document.getElementById('loginBtn');
+  const errEl = document.getElementById('loginError');
+  const codigo = input.value.trim().toLowerCase();
+
+  if (!codigo) { errEl.textContent = 'Digite o código de acesso.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Verificando…';
+  errEl.textContent = '';
+
+  try {
+    if (!supabase) {
+      errEl.textContent = 'Erro de conexão. Verifique sua internet.';
+      btn.disabled = false; btn.textContent = 'Entrar →'; return;
+    }
+
+    const { data, error } = await supabase
+      .from('estudasa_users')
+      .select('codigo')
+      .eq('codigo', codigo)
+      .single();
+
+    if (error || !data) {
+      errEl.textContent = 'Código incorreto. Tente novamente.';
+      btn.disabled = false; btn.textContent = 'Entrar →';
+      input.value = ''; input.focus();
+      return;
+    }
+
+    USER_CODIGO = codigo;
+    localStorage.setItem('estudasa_codigo', codigo);
+    await carregarDadosNuvem();
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('syncIndicator').classList.remove('hidden');
+    setSyncStatus('synced', '☁️ sincronizado');
+    init();
+
+  } catch(e) {
+    errEl.textContent = 'Erro de conexão. Tente novamente.';
+    btn.disabled = false; btn.textContent = 'Entrar →';
+  }
+}
+
+// CARREGAR DADOS DA NUVEM
+async function carregarDadosNuvem() {
+  if (!supabase || !USER_CODIGO) return;
+  try {
+    // Trilhas
+    const { data: dt } = await supabase.from('estudasa_trilhas').select('data').eq('user_codigo', USER_CODIGO).single();
+    if (dt && dt.data) trilhas = dt.data;
+
+    // Logs
+    const { data: dl } = await supabase.from('estudasa_logs').select('data').eq('user_codigo', USER_CODIGO).single();
+    if (dl && dl.data) logs = dl.data;
+
+    // Blocos
+    const { data: db } = await supabase.from('estudasa_blocos').select('data').eq('user_codigo', USER_CODIGO).single();
+    if (db && db.data) blocosFeitos = db.data;
+
+  } catch(e) {
+    console.warn('Erro ao carregar nuvem, usando local:', e);
+  }
+}
+
+// SALVAR NA NUVEM (com debounce para não sobrecarregar)
+let syncTimeout = null;
+function saveNuvem() {
+  // Salva local imediatamente
+  saveNuvem();
+  // Sincroniza nuvem com debounce de 1.5s
+  clearTimeout(syncTimeout);
+  setSyncStatus('syncing', '⏳ salvando…');
+  syncTimeout = setTimeout(async () => {
+    if (!supabase || !USER_CODIGO) { setSyncStatus('error', '⚠️ offline'); return; }
+    try {
+      await Promise.all([
+        supabase.from('estudasa_trilhas').upsert({ user_codigo: USER_CODIGO, data: trilhas, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
+        supabase.from('estudasa_logs').upsert({ user_codigo: USER_CODIGO, data: logs, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
+        supabase.from('estudasa_blocos').upsert({ user_codigo: USER_CODIGO, data: blocosFeitos, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
+      ]);
+      setSyncStatus('synced', '☁️ sincronizado');
+    } catch(e) {
+      setSyncStatus('error', '⚠️ erro ao salvar');
+      console.warn('Erro sync:', e);
+    }
+  }, 1500);
+}
+
+// ═══════════════════════════════════════
 // TRILHAS — cargo AUDITOR · Edital 01/2026 · Triunfo/PB
 // Fiel ao conteúdo programático do edital
 // ═══════════════════════════════════════
@@ -1284,7 +1487,7 @@ function aplicarBackup(obj) {
   if(obj.logs) logs = obj.logs;
   if(obj.blocosFeitos) blocosFeitos = obj.blocosFeitos;
   if(obj.trilhas) trilhas = obj.trilhas;
-  save();
+  saveNuvem();
   renderHoje(); renderTrilhas(); renderProgress(); renderLogs(); renderSemana();
   msgBackup('✅ Progresso restaurado!', 'var(--sage)');
 }
@@ -1343,7 +1546,7 @@ function confirmarFinal() {
   logs.unshift({ id:Date.now(), matId:timer.matId, matNome:MAT_NOME[timer.matId]||timer.matId, horas, conf:modalStarVal,
     nota:document.getElementById('modalNota').value.trim(), data:new Date().toISOString(), viaTimer:true });
   timer = null; if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
-  saveTimer(); save();
+  saveTimer(); saveNuvem();
   document.getElementById('modalFim').classList.remove('active');
   renderTimerUI(); renderHoje(); renderLogs(); renderProgress();
   toast(`✓ Sessão de ${formatTempo(ms)} registrada em ${MAT_NOME[logs[0].matId]}`);
@@ -1389,14 +1592,14 @@ function getEtapaAtual(matId) {
 function avancarEtapa(matId) {
   if(!TRILHAS[matId]) return;
   const atual = trilhas[matId] ?? 0;
-  if(atual < TRILHAS[matId].etapas.length) { trilhas[matId] = atual+1; save(); renderHoje(); renderTrilhas(); }
+  if(atual < TRILHAS[matId].etapas.length) { trilhas[matId] = atual+1; saveNuvem(); renderHoje(); renderTrilhas(); }
 }
 function voltarEtapa(matId) {
   const atual = trilhas[matId] ?? 0;
-  if(atual > 0) { trilhas[matId] = atual-1; save(); renderHoje(); renderTrilhas(); }
+  if(atual > 0) { trilhas[matId] = atual-1; saveNuvem(); renderHoje(); renderTrilhas(); }
 }
-function irParaEtapa(matId, idx) { trilhas[matId] = idx; delete trilhas['open_'+matId+'_'+idx]; save(); renderHoje(); renderTrilhas(); }
-function toggleExpand(matId, idx) { trilhas['open_'+matId+'_'+idx] = !trilhas['open_'+matId+'_'+idx]; save(); renderTrilhas(); }
+function irParaEtapa(matId, idx) { trilhas[matId] = idx; delete trilhas['open_'+matId+'_'+idx]; saveNuvem(); renderHoje(); renderTrilhas(); }
+function toggleExpand(matId, idx) { trilhas['open_'+matId+'_'+idx] = !trilhas['open_'+matId+'_'+idx]; saveNuvem(); renderTrilhas(); }
 
 // HOJE
 function getSaudacao() {
@@ -1486,7 +1689,7 @@ function toggleBloco(i) {
   if(!blocosFeitos[iso]) blocosFeitos[iso] = [];
   const idx = blocosFeitos[iso].indexOf(i);
   if(idx>=0) blocosFeitos[iso].splice(idx,1); else blocosFeitos[iso].push(i);
-  save(); renderHoje();
+  saveNuvem(); renderHoje();
 }
 function abrirDiario(matId) {
   goTab('diario');
@@ -1603,7 +1806,7 @@ function addLog() {
   const conf = parseInt(document.getElementById('fConf').value)||3;
   const nota = document.getElementById('fNota').value.trim();
   logs.unshift({ id:Date.now(), matId, matNome:MAT_NOME[matId], horas, conf, nota, data:new Date().toISOString() });
-  save(); document.getElementById('fNota').value='';
+  saveNuvem(); document.getElementById('fNota').value='';
   renderLogs(); renderHoje(); renderProgress();
 }
 function renderLogs() {
@@ -1619,7 +1822,7 @@ function renderLogs() {
       <span class="log-del" onclick="delLog(${l.id})">✕</span>
     </div>`).join('');
 }
-function delLog(id) { logs=logs.filter(l=>l.id!==id); save(); renderLogs(); renderHoje(); renderProgress(); }
+function delLog(id) { logs=logs.filter(l=>l.id!==id); saveNuvem(); renderLogs(); renderHoje(); renderProgress(); }
 
 // PROGRESSO
 function getHoras(matId) { return logs.filter(l=>l.matId===matId).reduce((s,l)=>s+l.horas,0); }
@@ -1695,7 +1898,47 @@ function init() {
   renderProgress();
   if(timer) { renderTimerUI(); if(!timer.paused) startTimerInterval(); }
 }
-init();
+
+// BOOT — inicializa Supabase e verifica login salvo
+async function boot() {
+  await initSupabase();
+
+  // Verificar se já tem código salvo localmente
+  const codigoSalvo = localStorage.getItem('estudasa_codigo');
+  if (codigoSalvo && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('estudasa_users')
+        .select('codigo')
+        .eq('codigo', codigoSalvo)
+        .single();
+
+      if (data && !error) {
+        USER_CODIGO = codigoSalvo;
+        await carregarDadosNuvem();
+        document.getElementById('loginOverlay').classList.add('hidden');
+        document.getElementById('syncIndicator').classList.remove('hidden');
+        setSyncStatus('synced', '☁️ sincronizado');
+        init();
+        return;
+      }
+    } catch(e) {
+      // Se falhar na verificação, mostra login
+    }
+  }
+
+  // Mostrar tela de login
+  document.getElementById('loginOverlay').classList.remove('hidden');
+  document.getElementById('loginInput').focus();
+
+  // Se o Supabase não carregou, avisa
+  if (!supabase) {
+    document.getElementById('loginError').textContent = 'Sem conexão com a internet. Conecte-se para acessar.';
+    document.getElementById('loginBtn').disabled = true;
+  }
+}
+
+boot();
 </script>
 </body>
 </html>
