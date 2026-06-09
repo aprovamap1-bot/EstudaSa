@@ -750,14 +750,7 @@ body {
     <div class="stitle-sub" id="hojeBlocoCount">— blocos</div>
   </div>
 
-  <div id="diaAnteriorSection" style="margin-bottom:24px;display:none">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-    <div style="width:3px;height:20px;background:var(--terra);border-radius:2px"></div>
-    <span style="font-family:var(--font-head);font-size:1rem;font-weight:500;color:var(--terra)">📅 Conteúdo de ontem (não estudado)</span>
-    <button onclick="document.getElementById('diaAnteriorSection').style.display='none'" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:var(--r);padding:4px 10px;font-size:0.75rem;color:var(--muted);cursor:pointer">Ocultar</button>
-  </div>
-  <div id="diaAnteriorList"></div>
-</div>
+  
 <div id="blocoList" class="bloco-list"></div>
 
   <div class="alert" style="margin-top:24px">
@@ -1621,37 +1614,7 @@ function renderHoje() {
   const hoje = new Date();
   const dow = hoje.getDay();
 
-  // Mostrar conteúdo do dia anterior se não foi estudado
-  const ontem = new Date(hoje); ontem.setDate(hoje.getDate()-1);
-  const dowOntem = ontem.getDay();
-  const isoOntem = ontem.toISOString().slice(0,10);
-  const planoOntem = PLANO_SEMANA[dowOntem];
-  const feitosOntem = blocosFeitos[isoOntem] || [];
-  const secAnterior = document.getElementById('diaAnteriorSection');
-  const listAnterior = document.getElementById('diaAnteriorList');
-  if (planoOntem && secAnterior) {
-    // Verificar se há blocos não feitos ontem
-    const todosFeitos = planoOntem.blocos.every((b,i) => feitosOntem.includes(i));
-    if (!todosFeitos) {
-      secAnterior.style.display = 'block';
-      const partesAnterior = [];
-      planoOntem.blocos.forEach((b,i) => {
-        const feito = feitosOntem.includes(i);
-        if(feito) return;
-        const info = getEtapaAtual(b.mat);
-        let titulo = info ? info.etapa.titulo : (MAT_NOME[b.mat]||b.mat);
-        let desc = info ? `<div style="font-size:0.8rem;color:var(--muted);margin-top:4px">${info.etapa.desc.replace(/<[^>]*>/g,'').slice(0,120)}…</div>` : '';
-        partesAnterior.push(`<div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--terra);border-radius:var(--r);padding:12px 16px;margin-bottom:8px">
-          <div style="font-size:0.75rem;color:var(--terra);font-weight:600;margin-bottom:4px">${b.hor} · ${MAT_NOME[b.mat]||b.mat}</div>
-          <div style="font-size:0.9rem;color:var(--ink);font-weight:500">${titulo}</div>
-          ${desc}
-        </div>`);
-      });
-      listAnterior.innerHTML = partesAnterior.join('');
-    } else {
-      secAnterior.style.display = 'none';
-    }
-  }
+
   const isoHoje = hoje.toISOString().slice(0,10);
   const plano = PLANO_SEMANA[dow];
   const frase = FRASES[hoje.getDate() % FRASES.length];
