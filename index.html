@@ -1086,7 +1086,7 @@ body {
 const SUPA_URL = 'https://fllboowontrhssbgcfhb.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsbGJvb3dvbnRyaHNzYmdjZmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NTgxNTEsImV4cCI6MjA5NjUzNDE1MX0.HzaISkTsIQepy4vlhuAXCtYqafOBuk_HTEI-EvfaGFU';
 
-let supabase = null;
+let supabaseClient = null;
 let USER_CODIGO = null;
 
 async function initSupabase() {
@@ -1095,7 +1095,7 @@ async function initSupabase() {
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
     script.onload = () => {
-      supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+      supabaseClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
       resolve(true);
     };
     script.onerror = () => resolve(false);
@@ -1126,7 +1126,7 @@ async function fazerLogin() {
   errEl.textContent = '';
 
   try {
-    if (!supabase) {
+    if (!supabaseClient) {
       errEl.textContent = 'Erro de conexão. Verifique sua internet.';
       btn.disabled = false; btn.textContent = 'Entrar →'; return;
     }
@@ -1160,18 +1160,18 @@ async function fazerLogin() {
 
 // CARREGAR DADOS DA NUVEM
 async function carregarDadosNuvem() {
-  if (!supabase || !USER_CODIGO) return;
+  if (!supabaseClient || !USER_CODIGO) return;
   try {
     // Trilhas
-    const { data: dt } = await supabase.from('estudasa_trilhas').select('data').eq('user_codigo', USER_CODIGO).single();
+    const { data: dt } = await supabaseClient.from('estudasa_trilhas').select('data').eq('user_codigo', USER_CODIGO).single();
     if (dt && dt.data) trilhas = dt.data;
 
     // Logs
-    const { data: dl } = await supabase.from('estudasa_logs').select('data').eq('user_codigo', USER_CODIGO).single();
+    const { data: dl } = await supabaseClient.from('estudasa_logs').select('data').eq('user_codigo', USER_CODIGO).single();
     if (dl && dl.data) logs = dl.data;
 
     // Blocos
-    const { data: db } = await supabase.from('estudasa_blocos').select('data').eq('user_codigo', USER_CODIGO).single();
+    const { data: db } = await supabaseClient.from('estudasa_blocos').select('data').eq('user_codigo', USER_CODIGO).single();
     if (db && db.data) blocosFeitos = db.data;
 
   } catch(e) {
@@ -1188,12 +1188,12 @@ function saveNuvem() {
   clearTimeout(syncTimeout);
   setSyncStatus('syncing', '⏳ salvando…');
   syncTimeout = setTimeout(async () => {
-    if (!supabase || !USER_CODIGO) { setSyncStatus('error', '⚠️ offline'); return; }
+    if (!supabaseClient || !USER_CODIGO) { setSyncStatus('error', '⚠️ offline'); return; }
     try {
       await Promise.all([
-        supabase.from('estudasa_trilhas').upsert({ user_codigo: USER_CODIGO, data: trilhas, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
-        supabase.from('estudasa_logs').upsert({ user_codigo: USER_CODIGO, data: logs, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
-        supabase.from('estudasa_blocos').upsert({ user_codigo: USER_CODIGO, data: blocosFeitos, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
+        supabaseClient.from('estudasa_trilhas').upsert({ user_codigo: USER_CODIGO, data: trilhas, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
+        supabaseClient.from('estudasa_logs').upsert({ user_codigo: USER_CODIGO, data: logs, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
+        supabaseClient.from('estudasa_blocos').upsert({ user_codigo: USER_CODIGO, data: blocosFeitos, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
       ]);
       setSyncStatus('synced', '☁️ sincronizado');
     } catch(e) {
@@ -1932,7 +1932,7 @@ async function boot() {
   document.getElementById('loginInput').focus();
 
   // Se o Supabase não carregou, avisa
-  if (!supabase) {
+  if (!supabaseClient) {
     document.getElementById('loginError').textContent = 'Sem conexão com a internet. Conecte-se para acessar.';
     document.getElementById('loginBtn').disabled = true;
   }
