@@ -1081,25 +1081,21 @@ body {
 
 <script>
 // ═══════════════════════════════════════
-// SUPABASE CONFIG
+// SUPABASE CONFIG — REST API pura (sem SDK)
 // ═══════════════════════════════════════
 const SUPA_URL = 'https://fllboowontrhssbgcfhb.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsbGJvb3dvbnRyaHNzYmdjZmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5NTgxNTEsImV4cCI6MjA5NjUzNDE1MX0.HzaISkTsIQepy4vlhuAXCtYqafOBuk_HTEI-EvfaGFU';
+const SUPA_HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPA_KEY,
+  'Authorization': 'Bearer ' + SUPA_KEY,
+  'Prefer': 'return=minimal'
+};
 
-let supabaseClient = null;
+let supabaseClient = true; // sempre "inicializado" pois usamos fetch direto
 let USER_CODIGO = null;
 
-async function initSupabase() {
-  try {
-    // Usar import dinâmico de módulo ES — não conflita com extensões
-    const mod = await import('https://esm.sh/@supabase/supabase-js@2');
-    supabaseClient = mod.createClient(SUPA_URL, SUPA_KEY);
-    return true;
-  } catch(e) {
-    console.warn('Erro ao inicializar Supabase:', e);
-    return false;
-  }
-}
+async function initSupabase() { return true; }
 
 function setSyncStatus(status, text) {
   const el = document.getElementById('syncIndicator');
@@ -1110,6 +1106,16 @@ function setSyncStatus(status, text) {
   tx.textContent = text;
 }
 
+// FETCH helper
+async function supaFetch(path, method='GET', body=null) {
+  const opts = { method, headers: SUPA_HEADERS };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(SUPA_URL + '/rest/v1/' + path, opts);
+  if (!r.ok) throw new Error(await r.text());
+  const text = await r.text();
+  return text ? JSON.parse(text) : null;
+}
+
 // LOGIN
 async function fazerLogin() {
   const input = document.getElementById('loginInput');
@@ -1118,30 +1124,15 @@ async function fazerLogin() {
   const codigo = input.value.trim().toLowerCase();
 
   if (!codigo) { errEl.textContent = 'Digite o código de acesso.'; return; }
-
-  btn.disabled = true;
-  btn.textContent = 'Verificando…';
-  errEl.textContent = '';
+  btn.disabled = true; btn.textContent = 'Verificando…'; errEl.textContent = '';
 
   try {
-    if (!supabaseClient) {
-      errEl.textContent = 'Erro de conexão. Verifique sua internet.';
-      btn.disabled = false; btn.textContent = 'Entrar →'; return;
-    }
-
-    const { data, error } = await supabase
-      .from('estudasa_users')
-      .select('codigo')
-      .eq('codigo', codigo)
-      .single();
-
-    if (error || !data) {
+    const data = await supaFetch('estudasa_users?codigo=eq.' + encodeURIComponent(codigo) + '&select=codigo');
+    if (!data || data.length === 0) {
       errEl.textContent = 'Código incorreto. Tente novamente.';
       btn.disabled = false; btn.textContent = 'Entrar →';
-      input.value = ''; input.focus();
-      return;
+      input.value = ''; input.focus(); return;
     }
-
     USER_CODIGO = codigo;
     localStorage.setItem('estudasa_codigo', codigo);
     await carregarDadosNuvem();
@@ -1149,49 +1140,42 @@ async function fazerLogin() {
     document.getElementById('syncIndicator').classList.remove('hidden');
     setSyncStatus('synced', '☁️ sincronizado');
     init();
-
   } catch(e) {
     errEl.textContent = 'Erro de conexão. Tente novamente.';
     btn.disabled = false; btn.textContent = 'Entrar →';
+    console.warn('Login error:', e);
   }
 }
 
 // CARREGAR DADOS DA NUVEM
 async function carregarDadosNuvem() {
-  if (!supabaseClient || !USER_CODIGO) return;
+  if (!USER_CODIGO) return;
   try {
-    // Trilhas
-    const { data: dt } = await supabaseClient.from('estudasa_trilhas').select('data').eq('user_codigo', USER_CODIGO).single();
-    if (dt && dt.data) trilhas = dt.data;
-
-    // Logs
-    const { data: dl } = await supabaseClient.from('estudasa_logs').select('data').eq('user_codigo', USER_CODIGO).single();
-    if (dl && dl.data) logs = dl.data;
-
-    // Blocos
-    const { data: db } = await supabaseClient.from('estudasa_blocos').select('data').eq('user_codigo', USER_CODIGO).single();
-    if (db && db.data) blocosFeitos = db.data;
-
-  } catch(e) {
-    console.warn('Erro ao carregar nuvem, usando local:', e);
-  }
+    const [dt, dl, db] = await Promise.all([
+      supaFetch('estudasa_trilhas?user_codigo=eq.' + USER_CODIGO + '&select=data'),
+      supaFetch('estudasa_logs?user_codigo=eq.' + USER_CODIGO + '&select=data'),
+      supaFetch('estudasa_blocos?user_codigo=eq.' + USER_CODIGO + '&select=data'),
+    ]);
+    if (dt && dt[0] && dt[0].data) trilhas = dt[0].data;
+    if (dl && dl[0] && dl[0].data) logs = dl[0].data;
+    if (db && db[0] && db[0].data) blocosFeitos = db[0].data;
+  } catch(e) { console.warn('Erro ao carregar nuvem:', e); }
 }
 
-// SALVAR NA NUVEM (com debounce para não sobrecarregar)
+// SALVAR NA NUVEM
 let syncTimeout = null;
 function saveNuvem() {
-  // Salva local imediatamente
-  saveNuvem();
-  // Sincroniza nuvem com debounce de 1.5s
+  save();
   clearTimeout(syncTimeout);
   setSyncStatus('syncing', '⏳ salvando…');
   syncTimeout = setTimeout(async () => {
-    if (!supabaseClient || !USER_CODIGO) { setSyncStatus('error', '⚠️ offline'); return; }
+    if (!USER_CODIGO) { setSyncStatus('error', '⚠️ offline'); return; }
     try {
+      const upsertHeaders = { ...SUPA_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=minimal' };
       await Promise.all([
-        supabaseClient.from('estudasa_trilhas').upsert({ user_codigo: USER_CODIGO, data: trilhas, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
-        supabaseClient.from('estudasa_logs').upsert({ user_codigo: USER_CODIGO, data: logs, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
-        supabaseClient.from('estudasa_blocos').upsert({ user_codigo: USER_CODIGO, data: blocosFeitos, updated_at: new Date().toISOString() }, { onConflict: 'user_codigo' }),
+        fetch(SUPA_URL + '/rest/v1/estudasa_trilhas', { method:'POST', headers:upsertHeaders, body: JSON.stringify({ user_codigo: USER_CODIGO, data: trilhas, updated_at: new Date().toISOString() }) }),
+        fetch(SUPA_URL + '/rest/v1/estudasa_logs', { method:'POST', headers:upsertHeaders, body: JSON.stringify({ user_codigo: USER_CODIGO, data: logs, updated_at: new Date().toISOString() }) }),
+        fetch(SUPA_URL + '/rest/v1/estudasa_blocos', { method:'POST', headers:upsertHeaders, body: JSON.stringify({ user_codigo: USER_CODIGO, data: blocosFeitos, updated_at: new Date().toISOString() }) }),
       ]);
       setSyncStatus('synced', '☁️ sincronizado');
     } catch(e) {
@@ -1199,6 +1183,27 @@ function saveNuvem() {
       console.warn('Erro sync:', e);
     }
   }, 1500);
+}
+
+// BOOT
+async function boot() {
+  const codigoSalvo = localStorage.getItem('estudasa_codigo');
+  if (codigoSalvo) {
+    try {
+      const data = await supaFetch('estudasa_users?codigo=eq.' + encodeURIComponent(codigoSalvo) + '&select=codigo');
+      if (data && data.length > 0) {
+        USER_CODIGO = codigoSalvo;
+        await carregarDadosNuvem();
+        document.getElementById('loginOverlay').classList.add('hidden');
+        document.getElementById('syncIndicator').classList.remove('hidden');
+        setSyncStatus('synced', '☁️ sincronizado');
+        init();
+        return;
+      }
+    } catch(e) { console.warn('Boot error:', e); }
+  }
+  document.getElementById('loginOverlay').classList.remove('hidden');
+  setTimeout(() => document.getElementById('loginInput').focus(), 100);
 }
 
 // ═══════════════════════════════════════
@@ -1929,11 +1934,7 @@ async function boot() {
   document.getElementById('loginOverlay').classList.remove('hidden');
   document.getElementById('loginInput').focus();
 
-  // Se o Supabase não carregou, avisa
-  if (!supabaseClient) {
-    document.getElementById('loginError').textContent = 'Sem conexão com a internet. Conecte-se para acessar.';
-    document.getElementById('loginBtn').disabled = true;
-  }
+  setTimeout(() => document.getElementById('loginInput').focus(), 100);
 }
 
 boot();
