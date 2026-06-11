@@ -2066,6 +2066,10 @@ function goTab(name) {
 
 // INIT
 function init() {
+  // Garantir que modal de sessão está fechado ao iniciar
+  const mFim = document.getElementById('modalFim');
+  if (mFim) mFim.classList.remove('active');
+  
   updateCountdowns();
   renderLogSelect();
   renderLogs();
