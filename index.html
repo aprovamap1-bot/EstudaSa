@@ -2220,40 +2220,116 @@ function renderRevisoes() {
 function abrirDia(dow, isoData) {
   var p = PLANO_SEMANA[dow];
   if (!p) return;
+  // Guardar contexto para os botões de ação
+  window._modalDiaDow = dow;
+  window._modalDiaIso = isoData;
+
   var meses = ['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
   var d = new Date(isoData + 'T12:00:00');
   document.getElementById('modalDiaTitulo').textContent = p.nome + ' - ' + d.getDate() + ' de ' + meses[d.getMonth()];
+  renderModalDiaConteudo();
+  document.getElementById('modalDia').classList.remove('hidden');
+}
+
+function renderModalDiaConteudo() {
+  var dow = window._modalDiaDow;
+  var isoData = window._modalDiaIso;
+  var p = PLANO_SEMANA[dow];
+  if (!p) return;
+
   var feitosDia = blocosFeitos[isoData] || [];
   var partes = '';
+
   for (var i = 0; i < p.blocos.length; i++) {
     var b = p.blocos[i];
     var etapaIdx = typeof trilhas[b.mat] === 'number' ? trilhas[b.mat] : 0;
     var etapas = TRILHAS[b.mat] ? TRILHAS[b.mat].etapas : [];
     var etapa = etapas[etapaIdx] || etapas[0];
+    var totalEtapas = etapas.length;
     var nome = MAT_NOME[b.mat] || b.mat;
     var cor = MAT_COR[b.mat] || 'var(--navy)';
     var feito = feitosDia.includes(i);
+    var etapaConcluida = etapaIdx >= totalEtapas;
+
     var descTexto = etapa && etapa.desc ? etapa.desc.replace(/<[^>]*>/g,'').slice(0,350) : '';
-    var descHtml = descTexto ? '<div style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-top:6px">' + descTexto + '</div>' : '';
-    var alertaHtml = etapa && etapa.alerta ? '<div style="background:#fef3cd;border:1px solid #e6b800;border-radius:6px;padding:8px 12px;font-size:0.78rem;color:var(--ink);margin-top:8px">Atencao: ' + etapa.alerta + '</div>' : '';
+    var descHtml = descTexto ? '<div style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-top:8px">' + descTexto + '</div>' : '';
+    var alertaHtml = etapa && etapa.alerta ? '<div style="background:#fef3cd;border:1px solid #e6b800;border-radius:6px;padding:8px 12px;font-size:0.78rem;color:var(--ink);margin-top:8px">⚠️ ' + etapa.alerta + '</div>' : '';
     var metaHtml = '';
     if (etapa && (etapa.tempo || etapa.meta)) {
-      metaHtml = '<div style="display:flex;gap:12px;margin-top:8px;font-size:0.75rem;color:var(--muted)">' + (etapa.tempo ? '<span>Duracao: ' + etapa.tempo + '</span>' : '') + (etapa.meta ? '<span>Meta: ' + etapa.meta + '</span>' : '') + '</div>';
+      metaHtml = '<div style="display:flex;gap:12px;margin-top:8px;font-size:0.75rem;color:var(--muted)">' + (etapa.tempo ? '<span>⏱ ' + etapa.tempo + '</span>' : '') + (etapa.meta ? '<span>🎯 ' + etapa.meta + '</span>' : '') + '</div>';
     }
-    var feitoBadge = feito ? ' <span style="font-size:0.7rem;background:#6b8e6b;color:#fff;border-radius:10px;padding:2px 8px">feito</span>' : '';
-    partes += '<div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;border-left:3px solid ' + cor + '">';
-    partes += '<div style="font-size:0.72rem;font-weight:600;color:' + cor + ';text-transform:uppercase;margin-bottom:6px">' + b.hor + ' - ' + nome + ' - ' + b.tempo + '</div>';
-    partes += '<div style="font-size:1rem;font-weight:600;color:var(--ink)">' + (etapa ? etapa.titulo : nome) + feitoBadge + '</div>';
-    partes += descHtml + alertaHtml + metaHtml + '</div>';
+
+    var etapaLabel = etapa ? ' <span style="font-size:0.7rem;background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:2px 8px;margin-left:6px">Etapa ' + (etapaIdx+1) + ' de ' + totalEtapas + '</span>' : '';
+    var feitoBadge = feito ? ' <span style="font-size:0.7rem;background:var(--sage);color:#fff;border-radius:10px;padding:2px 8px">✓ feito</span>' : '';
+
+    // Botões de ação
+    var btns = '<div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">';
+    if (!feito) {
+      btns += '<button onclick="marcarFeitoDia(' + i + ')" style="background:var(--bg-2);border:1px solid var(--border);border-radius:6px;padding:7px 14px;font-size:0.78rem;font-weight:600;cursor:pointer;color:var(--ink)">✓ Marcar feito</button>';
+    } else {
+      btns += '<button onclick="desmarcarFeitoDia(' + i + ')" style="background:none;border:1px solid var(--border);border-radius:6px;padding:7px 14px;font-size:0.78rem;cursor:pointer;color:var(--muted)">Desmarcar</button>';
+    }
+    if (!etapaConcluida) {
+      btns += '<button class="btn-etapa-dia" data-mat="' + b.mat + '" style="background:var(--navy);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:0.78rem;font-weight:600;cursor:pointer">Etapa concluida</button>';
+    } else {
+      btns += '<span style="font-size:0.78rem;color:var(--sage);font-weight:600">✅ Todas etapas concluídas</span>';
+    }
+    btns += '</div>';
+
+    partes += '<div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;border-left:3px solid ' + cor + (feito ? ';opacity:.75' : '') + '">';
+    partes += '<div style="font-size:0.72rem;font-weight:600;color:' + cor + ';text-transform:uppercase;margin-bottom:6px">' + b.hor + ' · ' + nome + ' · ' + b.tempo + '</div>';
+    partes += '<div style="font-size:1rem;font-weight:600;color:var(--ink)">' + (etapa ? etapa.titulo : nome) + etapaLabel + feitoBadge + '</div>';
+    partes += descHtml + alertaHtml + metaHtml + btns + '</div>';
   }
+
   document.getElementById('modalDiaConteudo').innerHTML = partes;
-  document.getElementById('modalDia').classList.remove('hidden');
+}
+
+function marcarFeitoDia(blocoIdx) {
+  var isoData = window._modalDiaIso;
+  if (!blocosFeitos[isoData]) blocosFeitos[isoData] = [];
+  if (!blocosFeitos[isoData].includes(blocoIdx)) {
+    blocosFeitos[isoData].push(blocoIdx);
+    saveNuvem();
+    renderModalDiaConteudo();
+    renderSemana();
+    renderHoje();
+  }
+}
+
+function desmarcarFeitoDia(blocoIdx) {
+  var isoData = window._modalDiaIso;
+  if (blocosFeitos[isoData]) {
+    blocosFeitos[isoData] = blocosFeitos[isoData].filter(function(x) { return x !== blocoIdx; });
+    saveNuvem();
+    renderModalDiaConteudo();
+    renderSemana();
+    renderHoje();
+  }
+}
+
+function concluirEtapaDia(matId) {
+  if (!TRILHAS[matId]) return;
+  var atual = typeof trilhas[matId] === 'number' ? trilhas[matId] : 0;
+  if (atual < TRILHAS[matId].etapas.length) {
+    var etapa = TRILHAS[matId].etapas[atual];
+    if (etapa) agendarRevisoes(matId, atual, etapa.titulo);
+    trilhas[matId] = atual + 1;
+    saveNuvem();
+    renderModalDiaConteudo();
+    renderTrilhas();
+    renderEditalChecklist();
+    renderHoje();
+  }
 }
 function fecharModalDia() {
   document.getElementById('modalDia').classList.add('hidden');
 }
 document.addEventListener('click', function(e) {
   if (e.target === document.getElementById('modalDia')) fecharModalDia();
+  if (e.target.classList.contains('btn-etapa-dia')) {
+    concluirEtapaDia(e.target.dataset.mat);
+  }
 });
 
 boot();
