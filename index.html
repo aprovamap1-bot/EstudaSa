@@ -1877,65 +1877,86 @@ function abrirDiario(matId) {
 
 // SEMANA
 function renderSemana() {
-  const el = document.getElementById('semanaTimeline'); if(!el) return;
+  var el = document.getElementById('semanaTimeline');
+  if (!el) return;
   if (typeof window.semanaOffset === 'undefined') window.semanaOffset = 0;
-  const hoje = new Date();
-  const diaSemana = hoje.getDay();
-  const segundaAtual = new Date(hoje);
+  var hoje = new Date();
+  var diaSemana = hoje.getDay();
+  var segundaAtual = new Date(hoje);
   segundaAtual.setDate(hoje.getDate() - (diaSemana === 0 ? 6 : diaSemana - 1));
   segundaAtual.setHours(0,0,0,0);
-  const segundaRef = new Date(segundaAtual);
+  var segundaRef = new Date(segundaAtual);
   segundaRef.setDate(segundaAtual.getDate() + window.semanaOffset * 7);
-  const domingoRef = new Date(segundaRef);
+  var domingoRef = new Date(segundaRef);
   domingoRef.setDate(segundaRef.getDate() + 6);
-  const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-  const labelSemana = segundaRef.getDate() + ' ' + meses[segundaRef.getMonth()] + ' – ' + domingoRef.getDate() + ' ' + meses[domingoRef.getMonth()];
-  const isAtual = window.semanaOffset === 0;
-  const nav = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r)">'
-    + '<button onclick="navegarSemana(-1)" style="background:none;border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;cursor:pointer;font-size:0.85rem;color:var(--ink)">← Anterior</button>'
-    + '<div style="text-align:center"><div style="font-family:var(--font-head);font-size:1rem;font-weight:500;color:var(--navy)">'
-    + (isAtual ? '📅 Esta semana' : (window.semanaOffset < 0 ? '⏪ Semana anterior' : '⏩ Próxima semana'))
-    + '</div><div style="font-size:0.78rem;color:var(--muted)">' + labelSemana + '</div></div>'
-    + '<button onclick="navegarSemana(1)" style="background:none;border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;cursor:pointer;font-size:0.85rem;color:var(--ink)">Próxima →</button>'
-    + '</div>';
-  const ordem = [1,2,3,4,5,6,0];
-  const dias = ordem.map(function(dow, i) {
-    const dataDir = new Date(segundaRef);
+  var meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  var labelSemana = segundaRef.getDate() + ' ' + meses[segundaRef.getMonth()] + ' – ' + domingoRef.getDate() + ' ' + meses[domingoRef.getMonth()];
+  var isAtual = window.semanaOffset === 0;
+
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r)">';
+  html += '<button onclick="navegarSemana(-1)" style="background:none;border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;cursor:pointer;font-size:0.85rem;color:var(--ink)">← Anterior</button>';
+  html += '<div style="text-align:center">';
+  html += '<div style="font-family:var(--font-head);font-size:1rem;font-weight:500;color:var(--navy)">' + (isAtual ? '📅 Esta semana' : (window.semanaOffset < 0 ? '⏪ Semana anterior' : '⏩ Próxima semana')) + '</div>';
+  html += '<div style="font-size:0.78rem;color:var(--muted)">' + labelSemana + '</div>';
+  html += '</div>';
+  html += '<button onclick="navegarSemana(1)" style="background:none;border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;cursor:pointer;font-size:0.85rem;color:var(--ink)">Próxima →</button>';
+  html += '</div>';
+
+  var ordem = [1,2,3,4,5,6,0];
+  for (var i = 0; i < ordem.length; i++) {
+    var dow = ordem[i];
+    var dataDir = new Date(segundaRef);
     dataDir.setDate(segundaRef.getDate() + i);
-    const isHoje = dataDir.toISOString().slice(0,10) === hoje.toISOString().slice(0,10);
-    const isoData = dataDir.toISOString().slice(0,10);
-    const isPast = dataDir < hoje && !isHoje;
-    const p = PLANO_SEMANA[dow];
-    let totalMin = 0;
-    p.blocos.forEach(function(b) {
-      const m=b.tempo.match(/(\d+)h(\d+)?/), m2=b.tempo.match(/^(\d+) min/);
-      if(m) totalMin+=parseInt(m[1])*60+(parseInt(m[2])||0); else if(m2) totalMin+=parseInt(m2[1]);
-    });
-    const totalH = (totalMin/60).toFixed(1);
-    const feitosDia = blocosFeitos[isoData] || [];
-    const todosFeitosDia = feitosDia.length >= p.blocos.length && p.blocos.length > 0;
-    const statusBadge = todosFeitosDia
+    var isoData = dataDir.toISOString().slice(0,10);
+    var isHoje = isoData === hoje.toISOString().slice(0,10);
+    var isPast = dataDir < hoje && !isHoje;
+    var p = PLANO_SEMANA[dow];
+    var totalMin = 0;
+    for (var j = 0; j < p.blocos.length; j++) {
+      var b = p.blocos[j];
+      var m = b.tempo.match(/(\d+)h(\d+)?/), m2 = b.tempo.match(/^(\d+) min/);
+      if (m) totalMin += parseInt(m[1])*60+(parseInt(m[2])||0);
+      else if (m2) totalMin += parseInt(m2[1]);
+    }
+    var totalH = (totalMin/60).toFixed(1);
+    var feitosDia = blocosFeitos[isoData] || [];
+    var todosFeitosDia = feitosDia.length >= p.blocos.length && p.blocos.length > 0;
+    var statusBadge = todosFeitosDia
       ? '<span style="font-size:0.68rem;background:var(--sage);color:#fff;padding:2px 7px;border-radius:10px;margin-left:6px">✓ concluído</span>'
       : (isPast && feitosDia.length === 0 ? '<span style="font-size:0.68rem;background:var(--terra);color:#fff;padding:2px 7px;border-radius:10px;margin-left:6px">não estudado</span>' : '');
-    const renderBloco = function(b) {
-      const nome = b.isSimulado?'📊 Simulado':b.isCorrecao?'🔍 Correção':b.isRevisao?'🔁 Revisão':(MAT_NOME[b.mat]||b.mat);
-      return '<div class="dia-bloco"><div class="dia-bloco-dot" style="background:'+(MAT_COR[b.mat]||'var(--muted)')+'"></div><div class="dia-bloco-mat">'+nome+'</div><div class="dia-bloco-h">'+b.tempo+'</div></div>';
-    };
-    const dia = dataDir.getDate();
-    const mes = meses[dataDir.getMonth()];
-    return '<div class="dia-row '+(isHoje?'hoje-row':'')+'" onclick="abrirDia('+dow+', ''+isoData+'')" style="opacity:'+(isPast && feitosDia.length===0 && !isHoje ? '.7' : '1')+'">'
-      + '<div class="dia-head"><div class="dia-titulo">'
-      + p.nome + (isHoje?' <span style="color:var(--navy);font-size:0.85rem;font-weight:600">· hoje</span>':'')
-      + ' <span style="font-size:0.78rem;color:var(--muted);font-weight:400">· '+dia+' '+mes+'</span>'
-      + statusBadge
-      + ' <span class="dia-ap">· '+p.apelido+'</span>'
-      + '</div><div class="dia-total">'+totalH+'h · '+p.blocos.length+' blocos</div></div>'
-      + '<div class="dia-blocos">'+p.blocos.map(renderBloco).join('')+'</div>'
-      + '<div class="dia-ver">👁 Ver conteúdo →</div>'
-      + '</div>';
+
+    var blocoHtml = '';
+    for (var k = 0; k < p.blocos.length; k++) {
+      var bl = p.blocos[k];
+      var nomeBloco = bl.isSimulado ? '📊 Simulado' : bl.isCorrecao ? '🔍 Correção' : bl.isRevisao ? '🔁 Revisão' : (MAT_NOME[bl.mat]||bl.mat);
+      blocoHtml += '<div class="dia-bloco"><div class="dia-bloco-dot" style="background:'+(MAT_COR[bl.mat]||'var(--muted)')+'"></div><div class="dia-bloco-mat">'+nomeBloco+'</div><div class="dia-bloco-h">'+bl.tempo+'</div></div>';
+    }
+
+    var diaNum = dataDir.getDate();
+    var mesNome = meses[dataDir.getMonth()];
+    html += '<div class="dia-row' + (isHoje ? ' hoje-row' : '') + '" data-dow="'+dow+'" data-iso="'+isoData+'" style="cursor:pointer;opacity:'+(isPast && feitosDia.length===0 && !isHoje ? '.7' : '1')+'">';
+    html += '<div class="dia-head"><div class="dia-titulo">';
+    html += p.nome;
+    if (isHoje) html += ' <span style="color:var(--navy);font-size:0.85rem;font-weight:600">· hoje</span>';
+    html += ' <span style="font-size:0.78rem;color:var(--muted);font-weight:400">· ' + diaNum + ' ' + mesNome + '</span>';
+    html += statusBadge;
+    html += ' <span class="dia-ap">· ' + p.apelido + '</span>';
+    html += '</div><div class="dia-total">' + totalH + 'h · ' + p.blocos.length + ' blocos</div></div>';
+    html += '<div class="dia-blocos">' + blocoHtml + '</div>';
+    html += '<div class="dia-ver">👁 Ver conteúdo →</div>';
+    html += '</div>';
+  }
+
+  el.innerHTML = html;
+
+  // Adicionar eventos de click após inserir no DOM
+  el.querySelectorAll('.dia-row').forEach(function(row) {
+    row.addEventListener('click', function() {
+      abrirDia(parseInt(this.dataset.dow), this.dataset.iso);
+    });
   });
-  el.innerHTML = nav + dias.join('');
 }
+
 function navegarSemana(dir) {
   if (typeof window.semanaOffset === 'undefined') window.semanaOffset = 0;
   window.semanaOffset += dir;
@@ -2191,139 +2212,7 @@ function renderRevisoes() {
 
 
 // BOOT — inicializa Supabase e verifica login salvo
-async function boot() {
-  await initSupabase();
 
-  // Verificar se já tem código salvo localmente
-  const codigoSalvo = localStorage.getItem('estudasa_codigo');
-  if (codigoSalvo && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('estudasa_users')
-        .select('codigo')
-        .eq('codigo', codigoSalvo)
-        .single();
-
-      if (data && !error) {
-        USER_CODIGO = codigoSalvo;
-        await carregarDadosNuvem();
-        document.getElementById('loginOverlay').classList.add('hidden');
-        document.getElementById('syncIndicator').classList.remove('hidden');
-        setSyncStatus('synced', '☁️ sincronizado');
-        init();
-        return;
-      }
-    } catch(e) {
-      // Se falhar na verificação, mostra login
-    }
-  }
-
-  // Mostrar tela de login
-  document.getElementById('loginOverlay').classList.remove('hidden');
-  document.getElementById('loginInput').focus();
-
-  setTimeout(() => document.getElementById('loginInput').focus(), 100);
-}
-
-// MODAL DIA DETALHADO
-function abrirDia(dow) {
-  const p = PLANO_SEMANA[dow];
-  if (!p) return;
-  const nomes = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-  document.getElementById('modalDiaTitulo').textContent = p.nome + ' · ' + p.apelido;
-  
-  const partes = p.blocos.map((b, i) => {
-    const mat = trilhas[b.mat];
-    const etapaIdx = mat ? mat.etapa : 0;
-    const etapas = TRILHAS[b.mat] ? TRILHAS[b.mat].etapas : [];
-    const etapa = etapas[etapaIdx] || etapas[0];
-    const nome = MAT_NOME[b.mat] || b.mat;
-    const cor = MAT_COR[b.mat] || 'var(--navy)';
-    
-    let descHtml = '';
-    let alertaHtml = '';
-    if (etapa) {
-      descHtml = `<div class="modal-bloco-desc">${etapa.desc ? etapa.desc.replace(/<[^>]*>/g,'').slice(0,300) + (etapa.desc.length > 300 ? '…' : '') : ''}</div>`;
-      if (etapa.alerta) alertaHtml = `<div class="modal-bloco-alerta">⚠️ ${etapa.alerta}</div>`;
-    }
-    
-    return `<div class="modal-bloco" style="border-left-color:${cor}">
-      <div class="modal-bloco-header">${b.hor} · ${nome} · ${b.tempo}</div>
-      <div class="modal-bloco-titulo">${etapa ? etapa.titulo : nome}</div>
-      ${descHtml}
-      ${alertaHtml}
-    </div>`;
-  });
-  
-  document.getElementById('modalDiaConteudo').innerHTML = partes.join('');
-  document.getElementById('modalDia').classList.remove('hidden');
-}
-
-function fecharModalDia() {
-  document.getElementById('modalDia').classList.add('hidden');
-}
-
-// Fechar modal clicando fora
-document.addEventListener('click', e => {
-  const modal = document.getElementById('modalDia');
-  if (e.target === modal) fecharModalDia();
-});
-
-// CHECKLIST DO EDITAL
-const EDITAL_MATERIAS = [
-  { id:'port',   nome:'Língua Portuguesa',       cor:'var(--m-port)',   icon:'📖' },
-  { id:'info',   nome:'Noções de Informática',    cor:'var(--m-info)',   icon:'💻' },
-  { id:'gerais', nome:'Conhecimentos Gerais',     cor:'var(--m-gerais)', icon:'🌍' },
-  { id:'const',  nome:'Direito Constitucional',   cor:'var(--m-const)',  icon:'⚖️' },
-  { id:'trib',   nome:'Direito Tributário',       cor:'var(--m-trib)',   icon:'💰' },
-  { id:'adm',    nome:'Direito Administrativo',   cor:'var(--m-adm)',    icon:'🏛' },
-  { id:'cont',   nome:'Contabilidade Pública',    cor:'var(--m-cont)',   icon:'📊' },
-  { id:'audit',  nome:'Auditoria',                cor:'var(--m-audit)',  icon:'🔍' },
-  { id:'ci',     nome:'Controle Interno',         cor:'var(--m-ci)',     icon:'🛡' },
-];
-
-function renderEditalChecklist() {
-  const el = document.getElementById('editalChecklist');
-  if (!el) return;
-
-  const itens = EDITAL_MATERIAS.map(function(mat) {
-    const total = TRILHAS[mat.id] ? TRILHAS[mat.id].etapas.length : 0;
-    const atual = trilhas[mat.id] ?? 0;
-    const pct = total > 0 ? Math.round((atual / total) * 100) : 0;
-    const concluida = atual >= total && total > 0;
-
-    return '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:6px;cursor:pointer" onclick="showTab('trilhas')">'
-      + '<div style="font-size:1.1rem">' + mat.icon + '</div>'
-      + '<div style="flex:1">'
-      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">'
-      + '<span style="font-size:0.85rem;font-weight:600;color:var(--ink)">' + mat.nome + '</span>'
-      + '<span style="font-size:0.75rem;color:' + (concluida ? 'var(--sage)' : 'var(--muted)') + ';font-weight:600">'
-      + (concluida ? '✅ Concluída' : atual + '/' + total + ' etapas') + '</span>'
-      + '</div>'
-      + '<div style="background:var(--border);border-radius:4px;height:6px;width:100%">'
-      + '<div style="background:' + mat.cor + ';height:6px;border-radius:4px;width:' + pct + '%;transition:width .4s"></div>'
-      + '</div>'
-      + '</div>'
-      + '</div>';
-  });
-
-  const totalEtapas = EDITAL_MATERIAS.reduce(function(acc, m) { return acc + (TRILHAS[m.id] ? TRILHAS[m.id].etapas.length : 0); }, 0);
-  const etapasConcluidas = EDITAL_MATERIAS.reduce(function(acc, m) { return acc + Math.min(trilhas[m.id] ?? 0, TRILHAS[m.id] ? TRILHAS[m.id].etapas.length : 0); }, 0);
-  const pctGeral = totalEtapas > 0 ? Math.round((etapasConcluidas / totalEtapas) * 100) : 0;
-
-  el.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-bottom:4px">'
-    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">'
-    + '<div style="font-family:var(--font-head);font-size:1.1rem;font-weight:500;color:var(--ink)">📋 Progresso no Edital</div>'
-    + '<div style="font-size:0.9rem;font-weight:700;color:var(--navy)">' + pctGeral + '% concluído</div>'
-    + '</div>'
-    + '<div style="background:var(--border);border-radius:6px;height:8px;margin-bottom:16px">'
-    + '<div style="background:var(--navy);height:8px;border-radius:6px;width:' + pctGeral + '%;transition:width .4s"></div>'
-    + '</div>'
-    + itens.join('')
-    + '</div>';
-}
-
-boot();
 </script>
 </body>
 </html>
