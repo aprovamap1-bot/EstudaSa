@@ -598,6 +598,81 @@ body {
   .bloco-tempo { display: none; }
 }
 
+
+/* MODAL DIA DETALHADO */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(42,37,32,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500; padding: 20px;
+}
+.modal-overlay.hidden { display: none; }
+.modal-card {
+  background: var(--card); border-radius: var(--r-lg);
+  padding: 28px; max-width: 560px; width: 100%;
+  max-height: 85vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(42,37,32,0.15);
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.modal-titulo { font-family: var(--font-head); font-size: 1.4rem; font-weight: 500; color: var(--ink); }
+.modal-close {
+  background: none; border: 1px solid var(--border); border-radius: var(--r);
+  padding: 6px 12px; cursor: pointer; color: var(--muted); font-size: 0.85rem;
+}
+.modal-bloco {
+  border: 1px solid var(--border); border-radius: var(--r);
+  padding: 16px; margin-bottom: 12px;
+  border-left: 3px solid var(--navy);
+}
+.modal-bloco-header {
+  font-size: 0.75rem; font-weight: 600; color: var(--navy);
+  text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px;
+}
+.modal-bloco-titulo { font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.modal-bloco-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+.modal-bloco-alerta {
+  background: #fef3cd; border: 1px solid var(--gold);
+  border-radius: 6px; padding: 8px 12px;
+  font-size: 0.78rem; color: var(--ink); margin-top: 8px;
+}
+
+/* SEMANA — dias clicáveis */
+.dia-row { cursor: pointer; transition: background .15s; border-radius: var(--r); padding: 4px; margin: -4px; }
+.dia-row:hover { background: var(--bg-2); }
+.dia-row .dia-ver { font-size: 0.72rem; color: var(--navy); font-weight: 600; margin-top: 4px; opacity: 0; transition: opacity .15s; }
+.dia-row:hover .dia-ver { opacity: 1; }
+
+
+/* REVISÃO ESPAÇADA */
+.revisao-section { margin-bottom: 24px; }
+.revisao-titulo {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-head); font-size: 1rem; font-weight: 500;
+  color: var(--plum); margin-bottom: 12px;
+}
+.revisao-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 3px solid var(--plum); border-radius: var(--r);
+  padding: 14px 16px; margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.revisao-info { flex: 1; }
+.revisao-mat { font-size: 0.72rem; font-weight: 600; color: var(--plum); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+.revisao-etapa { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+.revisao-prazo { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.revisao-btn {
+  background: var(--plum); color: #fff; border: none;
+  border-radius: var(--r); padding: 7px 14px;
+  font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  white-space: nowrap; transition: opacity .2s;
+}
+.revisao-btn:hover { opacity: .85; }
+.revisao-urgente { border-left-color: var(--terra) !important; }
+.revisao-urgente .revisao-mat { color: var(--terra) !important; }
+.revisao-urgente .revisao-btn { background: var(--terra) !important; }
+
 /* LOGIN */
 .login-overlay {
   position: fixed; inset: 0;
@@ -660,6 +735,18 @@ body {
 </style>
 </head>
 <body>
+
+
+<!-- MODAL DIA DETALHADO -->
+<div class="modal-overlay hidden" id="modalDia">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-titulo" id="modalDiaTitulo">Conteúdo do dia</div>
+      <button class="modal-close" onclick="fecharModalDia()">✕ Fechar</button>
+    </div>
+    <div id="modalDiaConteudo"></div>
+  </div>
+</div>
 
 <!-- TELA DE LOGIN -->
 <div class="login-overlay" id="loginOverlay">
@@ -751,6 +838,10 @@ body {
   </div>
 
   
+<div class="revisao-section" id="revisaoSection" style="display:none">
+  <div class="revisao-titulo">🔁 Revisões pendentes hoje</div>
+  <div id="revisaoList"></div>
+</div>
 <div id="blocoList" class="bloco-list"></div>
 
   <div class="alert" style="margin-top:24px">
@@ -1186,6 +1277,78 @@ function saveNuvem() {
   }, 1500);
 }
 
+// ═══════════════════════════════════════
+// REVISÃO ESPAÇADA
+// ═══════════════════════════════════════
+
+// Ao concluir etapa, agendar revisões em +3, +7, +15 dias
+function agendarRevisoes(matId, etapaIdx, etapaTitulo) {
+  if (!trilhas.revisoes) trilhas.revisoes = [];
+  const hoje = new Date();
+  const prazos = [3, 7, 15];
+  prazos.forEach(dias => {
+    const data = new Date(hoje);
+    data.setDate(hoje.getDate() + dias);
+    const iso = data.toISOString().slice(0,10);
+    // Evitar duplicatas
+    const jaExiste = trilhas.revisoes.some(r => r.mat === matId && r.etapa === etapaIdx && r.data === iso);
+    if (!jaExiste) {
+      trilhas.revisoes.push({
+        mat: matId,
+        etapa: etapaIdx,
+        titulo: etapaTitulo,
+        data: iso,
+        feita: false
+      });
+    }
+  });
+}
+
+function marcarRevisaoFeita(idx) {
+  if (trilhas.revisoes && trilhas.revisoes[idx]) {
+    trilhas.revisoes[idx].feita = true;
+    saveNuvem();
+    renderRevisoes();
+  }
+}
+
+function renderRevisoes() {
+  const section = document.getElementById('revisaoSection');
+  const list = document.getElementById('revisaoList');
+  if (!section || !list) return;
+
+  const hoje = new Date().toISOString().slice(0,10);
+  const pendentes = (trilhas.revisoes || [])
+    .map((r, i) => ({...r, idx: i}))
+    .filter(r => !r.feita && r.data <= hoje);
+
+  if (pendentes.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+
+  list.innerHTML = pendentes.map(r => {
+    const atrasada = r.data < hoje;
+    const matNome = MAT_NOME[r.mat] || r.mat;
+    const diasAtraso = atrasada ? Math.floor((new Date(hoje) - new Date(r.data)) / 86400000) : 0;
+    const prazoTexto = atrasada
+      ? `⚠️ Atrasada ${diasAtraso} dia${diasAtraso>1?'s':''}`
+      : '📅 Revisão programada para hoje';
+
+    return `<div class="revisao-card ${atrasada?'revisao-urgente':''}">
+      <div class="revisao-info">
+        <div class="revisao-mat">${matNome}</div>
+        <div class="revisao-etapa">${r.titulo}</div>
+        <div class="revisao-prazo">${prazoTexto}</div>
+      </div>
+      <button class="revisao-btn" onclick="marcarRevisaoFeita(${r.idx})">✓ Revisado</button>
+    </div>`;
+  }).join('');
+}
+
+
 // BOOT
 async function boot() {
   const codigoSalvo = localStorage.getItem('estudasa_codigo');
@@ -1597,7 +1760,13 @@ function getEtapaAtual(matId) {
 function avancarEtapa(matId) {
   if(!TRILHAS[matId]) return;
   const atual = trilhas[matId] ?? 0;
-  if(atual < TRILHAS[matId].etapas.length) { trilhas[matId] = atual+1; saveNuvem(); renderHoje(); renderTrilhas(); }
+  if(atual < TRILHAS[matId].etapas.length) {
+    // Agendar revisão espaçada da etapa concluída
+    const etapa = TRILHAS[matId].etapas[atual];
+    if (etapa) agendarRevisoes(matId, atual, etapa.titulo);
+    trilhas[matId] = atual+1;
+    saveNuvem(); renderHoje(); renderTrilhas();
+  }
 }
 function voltarEtapa(matId) {
   const atual = trilhas[matId] ?? 0;
@@ -1614,6 +1783,7 @@ function getSaudacao() {
 function renderHoje() {
   const hoje = new Date();
   const dow = hoje.getDay();
+  renderRevisoes();
 
 
   const isoHoje = hoje.toISOString().slice(0,10);
@@ -1725,12 +1895,12 @@ function renderSemana() {
         <div class="dia-bloco-h">${b.tempo}</div>
       </div>`;
     };
-    return `<div class="dia-row ${isH?'hoje-row':''}">
+    return `<div class="dia-row ${isH?'hoje-row':''}" onclick="abrirDia(${dow})">
       <div class="dia-head">
         <div class="dia-titulo">${p.nome}${isH?' <span style="color:var(--navy);font-size:0.85rem;font-weight:600">· hoje</span>':''} <span class="dia-ap">· ${p.apelido}</span></div>
         <div class="dia-total">${totalH}h · ${p.blocos.length} blocos</div>
       </div>
-      <div class="dia-blocos">${p.blocos.map(renderBloco).join('')}</div>
+      <div class="dia-blocos">${p.blocos.map(renderBloco).join('')}</div><div class="dia-ver">👁 Ver conteúdo detalhado →</div>
     </div>`;
   }).join('');
 }
@@ -1906,6 +2076,78 @@ function init() {
   if(timer) { renderTimerUI(); if(!timer.paused) startTimerInterval(); }
 }
 
+// ═══════════════════════════════════════
+// REVISÃO ESPAÇADA
+// ═══════════════════════════════════════
+
+// Ao concluir etapa, agendar revisões em +3, +7, +15 dias
+function agendarRevisoes(matId, etapaIdx, etapaTitulo) {
+  if (!trilhas.revisoes) trilhas.revisoes = [];
+  const hoje = new Date();
+  const prazos = [3, 7, 15];
+  prazos.forEach(dias => {
+    const data = new Date(hoje);
+    data.setDate(hoje.getDate() + dias);
+    const iso = data.toISOString().slice(0,10);
+    // Evitar duplicatas
+    const jaExiste = trilhas.revisoes.some(r => r.mat === matId && r.etapa === etapaIdx && r.data === iso);
+    if (!jaExiste) {
+      trilhas.revisoes.push({
+        mat: matId,
+        etapa: etapaIdx,
+        titulo: etapaTitulo,
+        data: iso,
+        feita: false
+      });
+    }
+  });
+}
+
+function marcarRevisaoFeita(idx) {
+  if (trilhas.revisoes && trilhas.revisoes[idx]) {
+    trilhas.revisoes[idx].feita = true;
+    saveNuvem();
+    renderRevisoes();
+  }
+}
+
+function renderRevisoes() {
+  const section = document.getElementById('revisaoSection');
+  const list = document.getElementById('revisaoList');
+  if (!section || !list) return;
+
+  const hoje = new Date().toISOString().slice(0,10);
+  const pendentes = (trilhas.revisoes || [])
+    .map((r, i) => ({...r, idx: i}))
+    .filter(r => !r.feita && r.data <= hoje);
+
+  if (pendentes.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+
+  list.innerHTML = pendentes.map(r => {
+    const atrasada = r.data < hoje;
+    const matNome = MAT_NOME[r.mat] || r.mat;
+    const diasAtraso = atrasada ? Math.floor((new Date(hoje) - new Date(r.data)) / 86400000) : 0;
+    const prazoTexto = atrasada
+      ? `⚠️ Atrasada ${diasAtraso} dia${diasAtraso>1?'s':''}`
+      : '📅 Revisão programada para hoje';
+
+    return `<div class="revisao-card ${atrasada?'revisao-urgente':''}">
+      <div class="revisao-info">
+        <div class="revisao-mat">${matNome}</div>
+        <div class="revisao-etapa">${r.titulo}</div>
+        <div class="revisao-prazo">${prazoTexto}</div>
+      </div>
+      <button class="revisao-btn" onclick="marcarRevisaoFeita(${r.idx})">✓ Revisado</button>
+    </div>`;
+  }).join('');
+}
+
+
 // BOOT — inicializa Supabase e verifica login salvo
 async function boot() {
   await initSupabase();
@@ -1940,6 +2182,50 @@ async function boot() {
 
   setTimeout(() => document.getElementById('loginInput').focus(), 100);
 }
+
+// MODAL DIA DETALHADO
+function abrirDia(dow) {
+  const p = PLANO_SEMANA[dow];
+  if (!p) return;
+  const nomes = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  document.getElementById('modalDiaTitulo').textContent = p.nome + ' · ' + p.apelido;
+  
+  const partes = p.blocos.map((b, i) => {
+    const mat = trilhas[b.mat];
+    const etapaIdx = mat ? mat.etapa : 0;
+    const etapas = TRILHAS[b.mat] ? TRILHAS[b.mat].etapas : [];
+    const etapa = etapas[etapaIdx] || etapas[0];
+    const nome = MAT_NOME[b.mat] || b.mat;
+    const cor = MAT_COR[b.mat] || 'var(--navy)';
+    
+    let descHtml = '';
+    let alertaHtml = '';
+    if (etapa) {
+      descHtml = `<div class="modal-bloco-desc">${etapa.desc ? etapa.desc.replace(/<[^>]*>/g,'').slice(0,300) + (etapa.desc.length > 300 ? '…' : '') : ''}</div>`;
+      if (etapa.alerta) alertaHtml = `<div class="modal-bloco-alerta">⚠️ ${etapa.alerta}</div>`;
+    }
+    
+    return `<div class="modal-bloco" style="border-left-color:${cor}">
+      <div class="modal-bloco-header">${b.hor} · ${nome} · ${b.tempo}</div>
+      <div class="modal-bloco-titulo">${etapa ? etapa.titulo : nome}</div>
+      ${descHtml}
+      ${alertaHtml}
+    </div>`;
+  });
+  
+  document.getElementById('modalDiaConteudo').innerHTML = partes.join('');
+  document.getElementById('modalDia').classList.remove('hidden');
+}
+
+function fecharModalDia() {
+  document.getElementById('modalDia').classList.add('hidden');
+}
+
+// Fechar modal clicando fora
+document.addEventListener('click', e => {
+  const modal = document.getElementById('modalDia');
+  if (e.target === modal) fecharModalDia();
+});
 
 boot();
 </script>
