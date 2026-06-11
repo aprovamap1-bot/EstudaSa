@@ -1894,7 +1894,10 @@ function renderSemana() {
   var isAtual = window.semanaOffset === 0;
 
   var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:var(--r)">';
-  html += '<button onclick="navegarSemana(-1)" style="background:none;border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;cursor:pointer;font-size:0.85rem;color:var(--ink)">← Anterior</button>';
+  // Não permitir voltar antes da semana do dia 8/jun/2026
+  var semanaMinima = new Date('2026-06-08T12:00:00');
+  var podirAnterior = segundaRef > semanaMinima;
+  html += '<button onclick="navegarSemana(-1)" ' + (!podirAnterior ? 'disabled style="background:none;border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;cursor:not-allowed;font-size:0.85rem;color:var(--faint)"' : 'style="background:none;border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;cursor:pointer;font-size:0.85rem;color:var(--ink)"') + '>← Anterior</button>';
   html += '<div style="text-align:center">';
   html += '<div style="font-family:var(--font-head);font-size:1rem;font-weight:500;color:var(--navy)">' + (isAtual ? '📅 Esta semana' : (window.semanaOffset < 0 ? '⏪ Semana anterior' : '⏩ Próxima semana')) + '</div>';
   html += '<div style="font-size:0.78rem;color:var(--muted)">' + labelSemana + '</div>';
@@ -2212,6 +2215,48 @@ function renderRevisoes() {
 
 
 // BOOT — inicializa Supabase e verifica login salvo
+
+// MODAL DIA DETALHADO
+function abrirDia(dow, isoData) {
+  var p = PLANO_SEMANA[dow];
+  if (!p) return;
+  var meses = ['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var d = new Date(isoData + 'T12:00:00');
+  document.getElementById('modalDiaTitulo').textContent = p.nome + ' - ' + d.getDate() + ' de ' + meses[d.getMonth()];
+  var feitosDia = blocosFeitos[isoData] || [];
+  var partes = '';
+  for (var i = 0; i < p.blocos.length; i++) {
+    var b = p.blocos[i];
+    var etapaIdx = typeof trilhas[b.mat] === 'number' ? trilhas[b.mat] : 0;
+    var etapas = TRILHAS[b.mat] ? TRILHAS[b.mat].etapas : [];
+    var etapa = etapas[etapaIdx] || etapas[0];
+    var nome = MAT_NOME[b.mat] || b.mat;
+    var cor = MAT_COR[b.mat] || 'var(--navy)';
+    var feito = feitosDia.includes(i);
+    var descTexto = etapa && etapa.desc ? etapa.desc.replace(/<[^>]*>/g,'').slice(0,350) : '';
+    var descHtml = descTexto ? '<div style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin-top:6px">' + descTexto + '</div>' : '';
+    var alertaHtml = etapa && etapa.alerta ? '<div style="background:#fef3cd;border:1px solid #e6b800;border-radius:6px;padding:8px 12px;font-size:0.78rem;color:var(--ink);margin-top:8px">Atencao: ' + etapa.alerta + '</div>' : '';
+    var metaHtml = '';
+    if (etapa && (etapa.tempo || etapa.meta)) {
+      metaHtml = '<div style="display:flex;gap:12px;margin-top:8px;font-size:0.75rem;color:var(--muted)">' + (etapa.tempo ? '<span>Duracao: ' + etapa.tempo + '</span>' : '') + (etapa.meta ? '<span>Meta: ' + etapa.meta + '</span>' : '') + '</div>';
+    }
+    var feitoBadge = feito ? ' <span style="font-size:0.7rem;background:#6b8e6b;color:#fff;border-radius:10px;padding:2px 8px">feito</span>' : '';
+    partes += '<div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;border-left:3px solid ' + cor + '">';
+    partes += '<div style="font-size:0.72rem;font-weight:600;color:' + cor + ';text-transform:uppercase;margin-bottom:6px">' + b.hor + ' - ' + nome + ' - ' + b.tempo + '</div>';
+    partes += '<div style="font-size:1rem;font-weight:600;color:var(--ink)">' + (etapa ? etapa.titulo : nome) + feitoBadge + '</div>';
+    partes += descHtml + alertaHtml + metaHtml + '</div>';
+  }
+  document.getElementById('modalDiaConteudo').innerHTML = partes;
+  document.getElementById('modalDia').classList.remove('hidden');
+}
+function fecharModalDia() {
+  document.getElementById('modalDia').classList.add('hidden');
+}
+document.addEventListener('click', function(e) {
+  if (e.target === document.getElementById('modalDia')) fecharModalDia();
+});
+
+boot();
 
 </script>
 </body>
