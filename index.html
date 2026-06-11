@@ -600,12 +600,12 @@ body {
 
 
 /* MODAL DIA DETALHADO */
-.modal-overlay {
+.modal-overlay-dia {
   position: fixed; inset: 0; background: rgba(42,37,32,0.5);
   display: flex; align-items: center; justify-content: center;
   z-index: 500; padding: 20px;
 }
-.modal-overlay.hidden { display: none; }
+.modal-overlay-dia.hidden { display: none; }
 .modal-card {
   background: var(--card); border-radius: var(--r-lg);
   padding: 28px; max-width: 560px; width: 100%;
@@ -738,7 +738,7 @@ body {
 
 
 <!-- MODAL DIA DETALHADO -->
-<div class="modal-overlay hidden" id="modalDia">
+<div class="modal-overlay-dia hidden" id="modalDia">
   <div class="modal-card">
     <div class="modal-header">
       <div class="modal-titulo" id="modalDiaTitulo">Conteúdo do dia</div>
