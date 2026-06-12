@@ -739,8 +739,8 @@ body {
 
 <!-- MODAL DIA DETALHADO -->
 <div class="modal-overlay-dia hidden" id="modalDia">
-  <div class="modal-card">
-    <div class="modal-header">
+  <div class="modal-card" style="max-height:85vh;overflow-y:auto;max-width:560px">
+    <div class="modal-header" style="position:sticky;top:0;background:var(--card);z-index:1;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:16px">
       <div class="modal-titulo" id="modalDiaTitulo">Conteúdo do dia</div>
       <button class="modal-close" onclick="fecharModalDia()">✕ Fechar</button>
     </div>
